@@ -1,0 +1,310 @@
+@startuml
+
+title __DUNGEON-CRAWL's Class Diagram__\n
+
+  namespace com.codecool.dungeoncrawl {
+    namespace AI {
+      class com.codecool.dungeoncrawl.AI.AttackMovement {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace AI {
+      class com.codecool.dungeoncrawl.AI.AttackPhase {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace AI {
+      class com.codecool.dungeoncrawl.AI.RandomMovement {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    class com.codecool.dungeoncrawl.App {
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    class com.codecool.dungeoncrawl.Main {
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    class com.codecool.dungeoncrawl.Tiles {
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace display {
+      class com.codecool.dungeoncrawl.display.GameOver {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace display {
+      class com.codecool.dungeoncrawl.display.Settings {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      class com.codecool.dungeoncrawl.logic.Cell {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      enum CellType {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      class com.codecool.dungeoncrawl.logic.Cheats {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      interface com.codecool.dungeoncrawl.logic.Drawable {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      class com.codecool.dungeoncrawl.logic.GameMap {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      class com.codecool.dungeoncrawl.logic.MapLoader {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      class com.codecool.dungeoncrawl.logic.SpecialRules {
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        abstract class com.codecool.dungeoncrawl.logic.actors.Actor {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Behemoth {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Ghost {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Player {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Scorpion {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Skeleton {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace door {
+        class com.codecool.dungeoncrawl.logic.door.ClosedDoor {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace door {
+        abstract class com.codecool.dungeoncrawl.logic.door.Door {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace door {
+        class com.codecool.dungeoncrawl.logic.door.OpenDoor {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace items {
+        class com.codecool.dungeoncrawl.logic.items.Crown {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace items {
+        class com.codecool.dungeoncrawl.logic.items.FullPotion {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace items {
+        class com.codecool.dungeoncrawl.logic.items.HalfPotion {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace items {
+        abstract class com.codecool.dungeoncrawl.logic.items.Items {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace items {
+        class com.codecool.dungeoncrawl.logic.items.Key {
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace items {
+        class com.codecool.dungeoncrawl.logic.items.Sword {
+        }
+      }
+    }
+  }
+  
+
+  com.codecool.dungeoncrawl.AI.AttackPhase o-- com.codecool.dungeoncrawl.display.GameOver : gameOver
+  com.codecool.dungeoncrawl.AI.AttackPhase o-- com.codecool.dungeoncrawl.logic.actors.Actor : monster
+  com.codecool.dungeoncrawl.AI.AttackPhase o-- com.codecool.dungeoncrawl.logic.actors.Actor : player
+  com.codecool.dungeoncrawl.AI.RandomMovement o-- com.codecool.dungeoncrawl.logic.GameMap : map
+  com.codecool.dungeoncrawl.Main -up-|> javafx.application.Application
+  com.codecool.dungeoncrawl.Main o-- com.codecool.dungeoncrawl.logic.GameMap : map
+  com.codecool.dungeoncrawl.logic.Cell .up.|> com.codecool.dungeoncrawl.logic.Drawable
+  com.codecool.dungeoncrawl.logic.Cell o-- com.codecool.dungeoncrawl.logic.actors.Actor : actor
+  com.codecool.dungeoncrawl.logic.Cell o-- com.codecool.dungeoncrawl.logic.door.Door : door
+  com.codecool.dungeoncrawl.logic.Cell o-- com.codecool.dungeoncrawl.logic.GameMap : gameMap
+  com.codecool.dungeoncrawl.logic.Cell o-- com.codecool.dungeoncrawl.logic.items.Items : item
+  com.codecool.dungeoncrawl.logic.Cell o-- com.codecool.dungeoncrawl.logic.CellType : type
+  com.codecool.dungeoncrawl.logic.actors.Actor .up.|> com.codecool.dungeoncrawl.logic.Drawable
+  com.codecool.dungeoncrawl.logic.actors.Actor o-- com.codecool.dungeoncrawl.logic.Cell : cell
+  com.codecool.dungeoncrawl.logic.actors.Actor o-- com.codecool.dungeoncrawl.logic.GameMap : map
+  com.codecool.dungeoncrawl.logic.actors.Actor o-- com.codecool.dungeoncrawl.logic.Cell : prevCell
+  com.codecool.dungeoncrawl.logic.actors.Behemoth -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+  com.codecool.dungeoncrawl.logic.actors.Ghost -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+  com.codecool.dungeoncrawl.logic.actors.Player -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+  com.codecool.dungeoncrawl.logic.actors.Scorpion -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+  com.codecool.dungeoncrawl.logic.actors.Skeleton -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+  com.codecool.dungeoncrawl.logic.door.ClosedDoor -up-|> com.codecool.dungeoncrawl.logic.door.Door
+  com.codecool.dungeoncrawl.logic.door.Door .up.|> com.codecool.dungeoncrawl.logic.Drawable
+  com.codecool.dungeoncrawl.logic.door.Door o-- com.codecool.dungeoncrawl.logic.Cell : cell
+  com.codecool.dungeoncrawl.logic.door.OpenDoor -up-|> com.codecool.dungeoncrawl.logic.door.Door
+  com.codecool.dungeoncrawl.logic.items.Crown -up-|> com.codecool.dungeoncrawl.logic.items.Items
+  com.codecool.dungeoncrawl.logic.items.FullPotion -up-|> com.codecool.dungeoncrawl.logic.items.Items
+  com.codecool.dungeoncrawl.logic.items.HalfPotion -up-|> com.codecool.dungeoncrawl.logic.items.Items
+  com.codecool.dungeoncrawl.logic.items.Items .up.|> com.codecool.dungeoncrawl.logic.Drawable
+  com.codecool.dungeoncrawl.logic.items.Items o-- com.codecool.dungeoncrawl.logic.Cell : cell
+  com.codecool.dungeoncrawl.logic.items.Key -up-|> com.codecool.dungeoncrawl.logic.items.Items
+  com.codecool.dungeoncrawl.logic.items.Sword -up-|> com.codecool.dungeoncrawl.logic.items.Items
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml
