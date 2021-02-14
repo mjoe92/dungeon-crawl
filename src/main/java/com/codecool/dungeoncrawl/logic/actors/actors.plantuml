@@ -1,0 +1,180 @@
+@startuml
+
+title __ACTORS's Class Diagram__\n
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        abstract class com.codecool.dungeoncrawl.logic.actors.Actor {
+            {static} - canMove : boolean
+            - canPassEmpty : boolean
+            - canPassWall : boolean
+            - health : int
+            - inventory : ArrayList<Items>
+            - isUnderAttack : boolean
+            - speed : int
+            - strength : int
+            + Actor()
+            + addInventory()
+            + addItemToInventory()
+            + canDoorBeOpened()
+            + getCell()
+            + getHealth()
+            + getInventory()
+            + getPrevCell()
+            + getSpeed()
+            + getStrength()
+            + hasKey()
+            + isCanMove()
+            + isCanPassEmpty()
+            + isCanPassWall()
+            + isDoorOpen()
+            + isUnderAttack()
+            + move()
+            + removeKey()
+            + setCanMove()
+            + setCell()
+            + setHealth()
+            + setInventory()
+            + setSpeed()
+            + setStrength()
+            + setUnderAttack()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Behemoth {
+            - health : int
+            - speed : int
+            - strength : int
+            + Behemoth()
+            + getHealth()
+            + getSpeed()
+            + getStrength()
+            + getTileName()
+            + setHealth()
+            + setSpeed()
+            + setStrength()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Ghost {
+            {static} - canPassEmpty : boolean
+            {static} - canPassWall : boolean
+            - health : int
+            - speed : int
+            - strength : int
+            + Ghost()
+            + getHealth()
+            + getSpeed()
+            + getStrength()
+            + getTileName()
+            + isCanPassEmpty()
+            + isCanPassWall()
+            + setHealth()
+            + setSpeed()
+            + setStrength()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Player {
+            {static} - canPassWall : boolean
+            - health : int
+            - playerName : String
+            - speed : int
+            - strength : int
+            + Player()
+            + getHealth()
+            + getSpeed()
+            + getStrength()
+            + getTileName()
+            + isCanPassWall()
+            + setCanPassWall()
+            + setHealth()
+            + setPlayerName()
+            + setSpeed()
+            + setStrength()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Scorpion {
+            - health : int
+            - speed : int
+            - strength : int
+            + Scorpion()
+            + getHealth()
+            + getSpeed()
+            + getStrength()
+            + getTileName()
+            + setHealth()
+            + setSpeed()
+            + setStrength()
+        }
+      }
+    }
+  }
+  
+
+  namespace com.codecool.dungeoncrawl {
+    namespace logic {
+      namespace actors {
+        class com.codecool.dungeoncrawl.logic.actors.Skeleton {
+            - health : int
+            - speed : int
+            - strength : int
+            + Skeleton()
+            + getHealth()
+            + getSpeed()
+            + getStrength()
+            + getTileName()
+            + setHealth()
+            + setSpeed()
+            + setStrength()
+        }
+      }
+    }
+  }
+  
+
+  com.codecool.dungeoncrawl.logic.actors.Actor .up.|> com.codecool.dungeoncrawl.logic.Drawable
+  com.codecool.dungeoncrawl.logic.actors.Actor o-- com.codecool.dungeoncrawl.logic.Cell : cell
+  com.codecool.dungeoncrawl.logic.actors.Actor o-- com.codecool.dungeoncrawl.logic.GameMap : map
+  com.codecool.dungeoncrawl.logic.actors.Actor o-- com.codecool.dungeoncrawl.logic.Cell : prevCell
+  com.codecool.dungeoncrawl.logic.actors.Behemoth -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+  com.codecool.dungeoncrawl.logic.actors.Ghost -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+  com.codecool.dungeoncrawl.logic.actors.Player -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+  com.codecool.dungeoncrawl.logic.actors.Scorpion -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+  com.codecool.dungeoncrawl.logic.actors.Skeleton -up-|> com.codecool.dungeoncrawl.logic.actors.Actor
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

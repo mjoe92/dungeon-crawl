@@ -2,21 +2,24 @@ package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
 
-public class Skeleton extends Actor {
+public class Ghost extends Actor {
 
-    private int health = 5;
-    private int speed = 1;
+    private int health = 12;
+    private int speed = 2;
     private int strength = 1;
 
-    public Skeleton(Cell cell) {
+    private static boolean canPassWall = true;
+    private static boolean canPassEmpty = true;
+
+    public Ghost(Cell cell) {
         super(cell);
     }
 
     @Override
     public String getTileName() {
-        return "skeleton";
+        return "ghost";
     }
-    
+
     @Override
     public int getHealth() {
         return health;
@@ -25,6 +28,16 @@ public class Skeleton extends Actor {
     @Override
     public int getSpeed() {
         return speed;
+    }
+
+    @Override
+    public boolean isCanPassWall() {
+        return canPassWall;
+    }
+
+    @Override
+    public boolean isCanPassEmpty() {
+        return canPassEmpty;
     }
 
     @Override

@@ -14,8 +14,8 @@ class ActorTest {
         Player player = new Player(gameMap.getCell(1, 1));
         player.move(1, 0);
 
-        assertEquals(2, player.getX());
-        assertEquals(1, player.getY());
+        assertEquals(2, player.getCell().getX());
+        assertEquals(1, player.getCell().getY());
         assertEquals(null, gameMap.getCell(1, 1).getActor());
         assertEquals(player, gameMap.getCell(2, 1).getActor());
     }
@@ -26,8 +26,8 @@ class ActorTest {
         Player player = new Player(gameMap.getCell(1, 1));
         player.move(1, 0);
 
-        assertEquals(1, player.getX());
-        assertEquals(1, player.getY());
+        assertEquals(1, player.getCell().getX());
+        assertEquals(1, player.getCell().getY());
     }
 
     @Test
@@ -35,8 +35,8 @@ class ActorTest {
         Player player = new Player(gameMap.getCell(2, 1));
         player.move(1, 0);
 
-        assertEquals(2, player.getX());
-        assertEquals(1, player.getY());
+        assertEquals(2, player.getCell().getX());
+        assertEquals(1, player.getCell().getY());
     }
 
     @Test
@@ -45,10 +45,10 @@ class ActorTest {
         Skeleton skeleton = new Skeleton(gameMap.getCell(2, 1));
         player.move(1, 0);
 
-        assertEquals(1, player.getX());
-        assertEquals(1, player.getY());
-        assertEquals(2, skeleton.getX());
-        assertEquals(1, skeleton.getY());
+        assertEquals(1, player.getCell().getX());
+        assertEquals(1, player.getCell().getY());
+        assertEquals(2, skeleton.getCell().getX());
+        assertEquals(1, skeleton.getCell().getY());
         assertEquals(skeleton, gameMap.getCell(2, 1).getActor());
     }
 }
