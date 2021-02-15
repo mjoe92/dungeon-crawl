@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.display.SaveTheGame;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
@@ -206,8 +207,10 @@ public class Main extends Application {
                 pickUpButtonEvent();
                 break;
             case S:
-                Player player = map.getPlayer();
-                dbManager.savePlayer(player);
+               // Player player = map.getPlayer();
+                SaveTheGame saveTheGame = new SaveTheGame(map.getPlayer());
+                saveTheGame.displaySaveWindow();
+                //dbManager.savePlayer(player);
                 break;
         }
         if ((keyEvent.getCode() == KeyCode.UP
