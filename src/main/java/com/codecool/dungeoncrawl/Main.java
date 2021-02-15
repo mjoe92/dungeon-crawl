@@ -229,7 +229,12 @@ public class Main extends Application {
             for (Actor monster : map.getMonsters()) {
 
                 if (monster.getHealth() == 0){
+                   // System.out.println("Monster to remove:" + monster);
+                    //System.out.println("Monsters before remove:" + map.getMonsters().toString());
+
                     map.removeMonster(monster);
+
+                 //   System.out.println("Monsters after removed:" + map.getMonsters().toString());
                 }
 
                 if (monster.getHealth() > 0) {
