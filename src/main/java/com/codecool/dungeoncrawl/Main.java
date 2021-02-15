@@ -227,6 +227,11 @@ public class Main extends Application {
 
         if (map.getPlayer().isCanMove()) {
             for (Actor monster : map.getMonsters()) {
+
+                if (monster.getHealth() == 0){
+                    map.removeMonster(monster);
+                }
+
                 if (monster.getHealth() > 0) {
                     RandomMovement monsterMove = new RandomMovement();
                     if (monster instanceof Scorpion) {
