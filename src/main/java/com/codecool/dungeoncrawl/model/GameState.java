@@ -1,19 +1,31 @@
 package com.codecool.dungeoncrawl.model;
 
+import com.codecool.dungeoncrawl.logic.actors.Actor;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.sql.Date;
 import java.util.List;
 
-public class GameState extends BaseModel {
+public class GameState extends BaseModel implements Serializable {
     private Date savedAt;
     private String currentMap;
     private List<String> discoveredMaps = new ArrayList<>();
     private PlayerModel player;
+    private List<Actor> monsters;
 
     public GameState(String currentMap, Date savedAt, PlayerModel player) {
         this.currentMap = currentMap;
         this.savedAt = savedAt;
         this.player = player;
+
+    }
+
+    public GameState(String currentMap, Date savedAt, PlayerModel player, List<Actor> monsters) {
+        this.currentMap = currentMap;
+        this.savedAt = savedAt;
+        this.player = player;
+        this.monsters = monsters;
     }
 
     public Date getSavedAt() {
