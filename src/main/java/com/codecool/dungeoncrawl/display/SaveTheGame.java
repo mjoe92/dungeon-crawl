@@ -9,8 +9,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -23,7 +29,8 @@ import com.codecool.dungeoncrawl.display.Settings;
 public class SaveTheGame {
     private static Stage window;
     //TODO Settings/getPlayerName-t lehetne megadni alapértelmezettnek de nem látja innen
-    final TextField name = new TextField("Playername");
+    final TextField name = new TextField("Saving_name");
+
     GameDatabaseManager dbManager;
     Player player;
 
@@ -42,12 +49,28 @@ public class SaveTheGame {
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 
+        BackgroundImage buttonBackgroundImage = new BackgroundImage(
+                new Image( getClass()
+                        .getResource("/menubuttonbackground.jpg")
+                        .toExternalForm()),
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        Background background = new Background(buttonBackgroundImage);
+
         window.initModality(Modality.APPLICATION_MODAL);
         window.setTitle("Save");
         window.centerOnScreen();
         window.setWidth(852);
         window.setHeight(413);
         name.setPrefWidth(100);
+        name.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
+        "    -fx-border-radius: 5;" +
+                "    -fx-padding: 6 6 6 6; -fx-text-fill: #ffdb00");
+
+        name.setBackground(null);
+
 
         final int MAX_LENGTH = 20;
         UnaryOperator<TextFormatter.Change> rejectChange = c -> {
@@ -60,15 +83,7 @@ public class SaveTheGame {
         };
         name.setTextFormatter(new TextFormatter(rejectChange));
 
-        BackgroundImage buttonBackgroundImage = new BackgroundImage(
-                new Image( getClass()
-                        .getResource("/menubuttonbackground.jpg")
-                        .toExternalForm()),
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.DEFAULT,
-                BackgroundSize.DEFAULT);
-        Background background = new Background(buttonBackgroundImage);
+
 
 
         Button saveButton = new Button("SAVE");
