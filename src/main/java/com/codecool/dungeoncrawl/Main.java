@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.display.SaveTheGame;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
@@ -206,8 +207,10 @@ public class Main extends Application {
                 pickUpButtonEvent();
                 break;
             case S:
-                Player player = map.getPlayer();
-                dbManager.savePlayer(player);
+               // Player player = map.getPlayer();
+                SaveTheGame saveTheGame = new SaveTheGame(map.getPlayer());
+                saveTheGame.displaySaveWindow();
+                //dbManager.savePlayer(player);
                 break;
         }
         if ((keyEvent.getCode() == KeyCode.UP
@@ -227,6 +230,16 @@ public class Main extends Application {
 
         if (map.getPlayer().isCanMove()) {
             for (Actor monster : map.getMonsters()) {
+
+                if (monster.getHealth() == 0){
+                   // System.out.println("Monster to remove:" + monster);
+                    //System.out.println("Monsters before remove:" + map.getMonsters().toString());
+
+                    map.removeMonster(monster);
+
+                 //   System.out.println("Monsters after removed:" + map.getMonsters().toString());
+                }
+
                 if (monster.getHealth() > 0) {
                     RandomMovement monsterMove = new RandomMovement();
                     if (monster instanceof Scorpion) {
