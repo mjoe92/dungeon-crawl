@@ -49,6 +49,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
@@ -92,6 +93,8 @@ public class Main extends Application {
         setupDbManager();
 
         window = primaryStage;
+        window.initStyle(StageStyle.UTILITY);
+
 
         //beállítások
         Settings settings = new Settings();
@@ -101,7 +104,7 @@ public class Main extends Application {
         cheatActivator.activateCheat(settings.getPlayerName(), map.getPlayer());
 
         GridPane ui = new GridPane();               //gridbe rendezi, azonos sorban lévők azonos magasak, oszlopban azonos szélesek a leghosszabbhoz igazítva
-        ui.setPrefWidth(200);
+        ui.setPrefWidth(250);
         ui.setPadding(new Insets(10));
 
 
@@ -133,7 +136,8 @@ public class Main extends Application {
         Button pickUp = new Button("Pick up");
         pickUp.setFocusTraversable(false);          //focust leveszi a gombról
         pickUp.setAlignment(Pos.TOP_CENTER);
-        pickUp.setStyle("-fx-font-size: 2em; ");
+        pickUp.setStyle("-fx-font-size: 2em; -fx-background-color: #472D3C; -fx-text-fill: #F4B41B; -fx-border-radius: 5; -fx-padding: 3 6 6 6; -fx-border-color: #F4B41B;");
+        pickUp.setPrefSize(250, 50);
 
         ui.setHgap(10);                        //grid elemek közötti hely beállítása, ne legyen közvetlenül egymás mellett
         ui.setVgap(10);
@@ -146,6 +150,8 @@ public class Main extends Application {
 
         VBox vBox = new VBox(ui, pickUp, inventoriesLabel, inventoryPane); //így (VBoxban) tudtam megoldani hogy szépen egymás alatt legyenek
 
+        vBox.setStyle("-fx-background-color:#CFC6B8 ; -fx-font-size: 1.4em; -fx-text-fill: #472D3C");
+
         inventoryPane.getChildren().add(new VBox(inventoryCanvas));
 
 
@@ -157,7 +163,6 @@ public class Main extends Application {
         ui.add(new Label("Health: "), 0, 0);
         ui.add(healthLabel, 1, 0);
 */
-
 
 
         BorderPane borderPane = new BorderPane();
@@ -207,7 +212,7 @@ public class Main extends Application {
                 pickUpButtonEvent();
                 break;
             case S:
-               // Player player = map.getPlayer();
+                // Player player = map.getPlayer();
                 SaveTheGame saveTheGame = new SaveTheGame(map.getPlayer());
                 saveTheGame.displaySaveWindow();
                 //dbManager.savePlayer(player);
@@ -231,13 +236,13 @@ public class Main extends Application {
         if (map.getPlayer().isCanMove()) {
             for (Actor monster : map.getMonsters()) {
 
-                if (monster.getHealth() == 0){
-                   // System.out.println("Monster to remove:" + monster);
+                if (monster.getHealth() == 0) {
+                    // System.out.println("Monster to remove:" + monster);
                     //System.out.println("Monsters before remove:" + map.getMonsters().toString());
 
                     map.removeMonster(monster);
 
-                 //   System.out.println("Monsters after removed:" + map.getMonsters().toString());
+                    //   System.out.println("Monsters after removed:" + map.getMonsters().toString());
                 }
 
                 if (monster.getHealth() > 0) {
@@ -309,7 +314,7 @@ public class Main extends Application {
         }
     }
 
-    private void gameOver(){
+    private void gameOver() {
         if (map.getPlayer().getHealth() <= 0) {
             displayLose();
         }

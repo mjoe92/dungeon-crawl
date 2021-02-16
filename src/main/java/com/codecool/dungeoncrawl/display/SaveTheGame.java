@@ -144,13 +144,13 @@ public class SaveTheGame {
             showDialogBox();
         } else {
              dbManager.savePlayer(player);
+             window.close();
          }
-        window.close();
     }
 
     private boolean alreadyExistInDb() {
         setupDbManager();
-        boolean isExist = false;
+        boolean isExist = true;
         //TODO check if already exist the given name in db - végigiterálunk listán és átállítom truera ha van találat
         return isExist;
     }
@@ -164,7 +164,10 @@ public class SaveTheGame {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("This name is already exists!");
         alert.setHeaderText("Would you like to overwrite the already existing state?");
-        alert.setContentText("YES: the already existing state is updated. /n/r NO: you can choose another saving name.");
+        alert.setContentText("YES: the already exist state will be updated."
+                + System.lineSeparator()
+                + "NO: you can choose another name for save.");
+
 
         ButtonType buttonTypeYes = new ButtonType("Yes");
         ButtonType buttonTypeNo = new ButtonType("No");
@@ -176,10 +179,13 @@ public class SaveTheGame {
         if (result.get() == buttonTypeYes){
             // ... user chose "Yes"
             dbManager.update(player); //TODO implement update method in PlayerDaoJDBC
+            alert.close();
+            window.close();
 
         } else if (result.get() == buttonTypeNo) {
             // ... user chose "No": close dialog
         alert.close();
+        name.requestFocus();
         }
     }
 
