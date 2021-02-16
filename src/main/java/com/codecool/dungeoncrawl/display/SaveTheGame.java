@@ -6,24 +6,30 @@ import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
+import javafx.scene.effect.Blend;
+import javafx.scene.effect.BlendMode;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 import com.codecool.dungeoncrawl.display.Settings;
 
 public class SaveTheGame {
     private static Stage window;
     //TODO Settings/getPlayerName-t lehetne megadni alapértelmezettnek de nem látja innen
-    final TextField name = new TextField("Playername");
+    final TextField name = new TextField("Name");
+
     GameDatabaseManager dbManager;
     Player player;
 
@@ -42,24 +48,6 @@ public class SaveTheGame {
                 BackgroundRepeat.NO_REPEAT,
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 
-        window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Save");
-        window.centerOnScreen();
-        window.setWidth(852);
-        window.setHeight(413);
-        name.setPrefWidth(100);
-
-        final int MAX_LENGTH = 20;
-        UnaryOperator<TextFormatter.Change> rejectChange = c -> {
-            if (c.isContentChange()) {
-                if (c.getControlNewText().length() > MAX_LENGTH) {
-                    return null;
-                }
-            }
-            return c;
-        };
-        name.setTextFormatter(new TextFormatter(rejectChange));
-
         BackgroundImage buttonBackgroundImage = new BackgroundImage(
                 new Image( getClass()
                         .getResource("/menubuttonbackground.jpg")
@@ -70,6 +58,35 @@ public class SaveTheGame {
                 BackgroundSize.DEFAULT);
         Background background = new Background(buttonBackgroundImage);
 
+        window.initModality(Modality.APPLICATION_MODAL);
+        window.setTitle("Save");
+        window.centerOnScreen();
+        window.setWidth(852);
+        window.setHeight(413);
+        name.setPrefWidth(100);
+        name.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
+        "    -fx-border-radius: 5;" +
+                "    -fx-padding: 6 6 6 6; -fx-text-fill: #ffdb00");
+
+        name.setBackground(null);
+
+
+        final int MAX_LENGTH = 20;
+        UnaryOperator<TextFormatter.Change> rejectChange = c -> {
+            if (c.isContentChange()) {
+                if (c.getControlNewText().length() > MAX_LENGTH) {
+                    return null;
+                }
+            }
+            return c;
+        };
+
+
+        name.setTextFormatter(new TextFormatter(rejectChange));
+
+
+
+
 
         Button saveButton = new Button("SAVE");
         saveButton.setOnAction(e -> onKeyPressed());
@@ -78,6 +95,8 @@ public class SaveTheGame {
         saveButton.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
                 "    -fx-border-radius: 5;" +
                 "    -fx-padding: 3 6 6 6; -fx-text-fill: #ffdb00");
+        saveButton.setPrefSize(200, 50);
+      //  saveButton.setMaxHeight(50);
 
         Button cancelButton = new Button("CANCEL");
         cancelButton.setCancelButton(true);
@@ -87,10 +106,11 @@ public class SaveTheGame {
         cancelButton.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
                 "    -fx-border-radius: 5;" +
                 "    -fx-padding: 3 6 6 6; -fx-text-fill: #ffdb00");
-
+        //cancelButton.setMaxWidth(100);
+        cancelButton.setPrefSize(200, 50);
 
         VBox input = new VBox();
-        input.setMaxWidth(200);
+        input.setMaxWidth(300);
         input.setSpacing(20);
         input.setAlignment(Pos.CENTER);
         HBox hbox = new HBox(saveButton, cancelButton);
@@ -117,10 +137,53 @@ public class SaveTheGame {
     }
 
     private void onKeyPressed() {
-        dbManager.savePlayer(player);
+
+        setupDbManager();
+
+         if (alreadyExistInDb()) {
+            showDialogBox();
+        } else {
+             dbManager.savePlayer(player);
+         }
+        window.close();
     }
 
-    private void setupDbManager() {
+    private boolean alreadyExistInDb() {
+        setupDbManager();
+        boolean isExist = false;
+        //TODO check if already exist the given name in db - végigiterálunk listán és átállítom truera ha van találat
+        return isExist;
+    }
+
+    private void showDialogBox() {
+        //TODO show dialog box with question: Would you like to overwrite the already existing state? YES / NO
+        /**If the given username already exist in the db the system shows a dialogbox with a question: Would you like to overwrite the already existing state?
+         Choosing Yes: the already existing state is updated and all modal window closes
+         Choosing No: the dialog closes and the name input field content on the saving dialog is selected again*/
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("This name is already exists!");
+        alert.setHeaderText("Would you like to overwrite the already existing state?");
+        alert.setContentText("YES: the already existing state is updated. /n/r NO: you can choose another saving name.");
+
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
+
+
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeYes){
+            // ... user chose "Yes"
+            dbManager.update(player); //TODO implement update method in PlayerDaoJDBC
+
+        } else if (result.get() == buttonTypeNo) {
+            // ... user chose "No": close dialog
+        alert.close();
+        }
+    }
+
+    private void setupDbManager(){
 //TODO onKeyPressed event and setup db implement correctly
         dbManager = new GameDatabaseManager();
         try {
