@@ -163,7 +163,7 @@ public class Main extends Application {
         BorderPane borderPane = new BorderPane();
 
         borderPane.setCenter(canvas);
-        borderPane.setRight(ui);
+        borderPane.setRight(vBox);
 
         Scene scene = new Scene(borderPane);
         primaryStage.setScene(scene);
