@@ -18,6 +18,8 @@ public class DeserializeJSON {
     public DeserializeJSON(String serializedGamestate, String serializedPlayerModel) {
         this.serializedGamestate = serializedGamestate; //TODO change param if we want to read from file here
         this.serializedPlayerModel = serializedPlayerModel;
+        setGameState(serializedGamestate);
+        setPlayerModel(serializedPlayerModel);
     }
 
     public GameState getGameState() {
