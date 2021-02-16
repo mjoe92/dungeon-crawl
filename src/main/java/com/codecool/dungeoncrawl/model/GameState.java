@@ -59,4 +59,12 @@ public class GameState extends BaseModel implements Serializable {
     public void setPlayer(PlayerModel player) {
         this.player = player;
     }
+
+    public List<Actor> getMonsters() {
+        return monsters;
+    }
+
+    public void setMonsters(List<Actor> monsters) {
+        this.monsters = monsters;
+    }
 }
