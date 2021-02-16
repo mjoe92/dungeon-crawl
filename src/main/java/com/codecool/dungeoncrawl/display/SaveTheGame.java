@@ -135,6 +135,7 @@ public class SaveTheGame {
     }
 
     private void onKeyPressed() {
+        setupDbManager();
         dbManager.savePlayer(player);
     }
 
