@@ -3,8 +3,30 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="66ffcfb0-6adb-4642-90d0-857d1c584104" name="Default Changelist" comment="" />
+    <list default="true" id="66ffcfb0-6adb-4642-90d0-857d1c584104" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/dao/PersonalData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/dao/GameDatabaseManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/codecool/dungeoncrawl/dao/GameDatabaseManager.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,8 +55,10 @@
   </component>
   <component name="RunManager" selected="Application.App">
     <configuration name="App" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="ALTERNATIVE_JRE_PATH" value="11" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.codecool.dungeoncrawl.App" />
-      <module name="dungeon-crawl" />
+      <module name="dungeon-crawl-2-java-JuhaszEvelin" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.codecool.dungeoncrawl.*" />
@@ -185,5 +209,34 @@
       <updated>1613315956915</updated>
     </task>
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="WindowStateProjectService">
+    <state width="1554" height="281" key="GridCell.Tab.0.bottom" timestamp="1613467119612">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="1554" height="281" key="GridCell.Tab.0.bottom/0.0.2560.1040@0.0.2560.1040" timestamp="1613467119612" />
+    <state width="1554" height="281" key="GridCell.Tab.0.center" timestamp="1613467119612">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="1554" height="281" key="GridCell.Tab.0.center/0.0.2560.1040@0.0.2560.1040" timestamp="1613467119612" />
+    <state width="1554" height="281" key="GridCell.Tab.0.left" timestamp="1613467119612">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="1554" height="281" key="GridCell.Tab.0.left/0.0.2560.1040@0.0.2560.1040" timestamp="1613467119612" />
+    <state width="1554" height="281" key="GridCell.Tab.0.right" timestamp="1613467119612">
+      <screen x="0" y="0" width="2560" height="1040" />
+    </state>
+    <state width="1554" height="281" key="GridCell.Tab.0.right/0.0.2560.1040@0.0.2560.1040" timestamp="1613467119612" />
   </component>
 </project>
