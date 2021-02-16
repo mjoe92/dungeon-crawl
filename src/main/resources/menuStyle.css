@@ -1,0 +1,39 @@
+/* VARIABLE DEFINITIONS: Only these 4 variables have to be adjusted, the rest is copy-paste */
+* {
+  -fx-my-menu-color: #472D3C;                  /* Change according to your needs */
+  -fx-my-menu-color-highlighted: #CFC6B8;      /* Change according to your needs */
+  -fx-my-menu-font-color: #F4B41B;             /* Change according to your needs */
+  -fx-my-menu-font-color-highlighted: #472D3C; /* Change according to your needs */
+}
+
+/* Try this: Comment .menu below and use menu1.setStyle from MenuExample.java */
+.menu {
+    -fx-background-color: #472D3C;
+    -fx-font-size: 1.2em;
+    -fx-text-fill: #F4B41B;
+    -fx-border-radius: 5;
+    -fx-padding: 3 6 6 6;
+    -fx-border-color: #F4B41B;
+    -fx-my-menu-font-color: #F4B41B; //sárga
+    -fx-my-menu-font-color-highlighted:  #CFC6B8; //lilás
+}
+
+
+.menu .label
+{
+    -fx-text-fill: #F4B41B;
+
+}
+
+/* MENU BAR + Top-level MENU BUTTONS */
+/*** The menu bar itself ***/
+.menu-bar {
+    -fx-background-color: -fx-my-menu-color;
+    
+}
+
+/* CONTEXT MENU */
+/*** The context menu that contains a menu's menu items ***/
+.context-menu {
+    -fx-background-color: -fx-my-menu-color;
+}
