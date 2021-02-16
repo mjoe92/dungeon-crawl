@@ -75,14 +75,18 @@ public class SaveTheGame {
         saveButton.setOnAction(e -> onKeyPressed());
         saveButton.setAlignment(Pos.BOTTOM_CENTER);
         saveButton.setBackground(background);
-        saveButton.setStyle("-fx-font-size: 2em;  -fx-text-fill: #ffdb00");
+        saveButton.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
+                "    -fx-border-radius: 5;" +
+                "    -fx-padding: 3 6 6 6; -fx-text-fill: #ffdb00");
 
         Button cancelButton = new Button("CANCEL");
         cancelButton.setCancelButton(true);
         cancelButton.setOnAction(e -> window.close());
         cancelButton.setAlignment(Pos.BOTTOM_CENTER);
         cancelButton.setBackground(background);
-        cancelButton.setStyle("-fx-font-size: 2em; -fx-text-fill: #ffdb00");
+        cancelButton.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
+                "    -fx-border-radius: 5;" +
+                "    -fx-padding: 3 6 6 6; -fx-text-fill: #ffdb00");
 
 
         VBox input = new VBox();
