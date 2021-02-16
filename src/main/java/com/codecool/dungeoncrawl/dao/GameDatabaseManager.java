@@ -22,6 +22,11 @@ public class GameDatabaseManager {
         playerDao.add(model);
     }
 
+    public void update(Player player){
+        PlayerModel model = new PlayerModel(player);
+        playerDao.update(model);
+    }
+
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
 

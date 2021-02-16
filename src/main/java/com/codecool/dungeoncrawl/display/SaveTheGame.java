@@ -6,9 +6,7 @@ import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextFormatter;
+import javafx.scene.control.*;
 import javafx.scene.effect.Blend;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.effect.DropShadow;
@@ -23,6 +21,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.sql.SQLException;
+import java.util.Optional;
 import java.util.function.UnaryOperator;
 import com.codecool.dungeoncrawl.display.Settings;
 
@@ -81,7 +80,10 @@ public class SaveTheGame {
             }
             return c;
         };
+
+
         name.setTextFormatter(new TextFormatter(rejectChange));
+
 
 
 
@@ -135,11 +137,53 @@ public class SaveTheGame {
     }
 
     private void onKeyPressed() {
+
         setupDbManager();
-        dbManager.savePlayer(player);
+
+         if (alreadyExistInDb()) {
+            showDialogBox();
+        } else {
+             dbManager.savePlayer(player);
+         }
+        window.close();
     }
 
-    private void setupDbManager() {
+    private boolean alreadyExistInDb() {
+        setupDbManager();
+        boolean isExist = false;
+        //TODO check if already exist the given name in db - végigiterálunk listán és átállítom truera ha van találat
+        return isExist;
+    }
+
+    private void showDialogBox() {
+        //TODO show dialog box with question: Would you like to overwrite the already existing state? YES / NO
+        /**If the given username already exist in the db the system shows a dialogbox with a question: Would you like to overwrite the already existing state?
+         Choosing Yes: the already existing state is updated and all modal window closes
+         Choosing No: the dialog closes and the name input field content on the saving dialog is selected again*/
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("This name is already exists!");
+        alert.setHeaderText("Would you like to overwrite the already existing state?");
+        alert.setContentText("YES: the already existing state is updated. /n/r NO: you can choose another saving name.");
+
+        ButtonType buttonTypeYes = new ButtonType("Yes");
+        ButtonType buttonTypeNo = new ButtonType("No");
+
+
+        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == buttonTypeYes){
+            // ... user chose "Yes"
+            dbManager.update(player); //TODO implement update method in PlayerDaoJDBC
+
+        } else if (result.get() == buttonTypeNo) {
+            // ... user chose "No": close dialog
+        alert.close();
+        }
+    }
+
+    private void setupDbManager(){
 //TODO onKeyPressed event and setup db implement correctly
         dbManager = new GameDatabaseManager();
         try {
