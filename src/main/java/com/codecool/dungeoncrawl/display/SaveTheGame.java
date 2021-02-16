@@ -29,7 +29,7 @@ import com.codecool.dungeoncrawl.display.Settings;
 public class SaveTheGame {
     private static Stage window;
     //TODO Settings/getPlayerName-t lehetne megadni alapértelmezettnek de nem látja innen
-    final TextField name = new TextField("Saving_name");
+    final TextField name = new TextField("Name");
 
     GameDatabaseManager dbManager;
     Player player;
