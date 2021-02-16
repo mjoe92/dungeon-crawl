@@ -12,7 +12,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -42,7 +42,6 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -81,6 +80,8 @@ public class Main extends Application {
     Label monsterHealthLabel = new Label();
     Label monsterstrengthLabel = new Label();
     GameDatabaseManager dbManager;
+    MenuBar menuBar = new MenuBar();
+    SaveTheGame saveTheGame = new SaveTheGame(map.getPlayer());
 
     static Stage window;
 
@@ -95,6 +96,28 @@ public class Main extends Application {
         window = primaryStage;
         window.initStyle(StageStyle.UTILITY);
 
+        //Menuelemek
+        Menu menu = new Menu("Menu");
+        MenuItem saveMenuItem = new MenuItem("Save");
+        MenuItem loadMenuItem = new MenuItem("Load");
+        MenuItem importMenuItem = new MenuItem("Import Game");
+        MenuItem exportMenuItem = new MenuItem("Export Game");
+
+        menu.getItems().add(saveMenuItem);
+        menu.getItems().add(loadMenuItem);
+        menu.getItems().add(importMenuItem);
+        menu.getItems().add(exportMenuItem);
+
+        menuBar.getMenus().add(menu);
+
+        //Menuelem event TODO load, export, import event
+        saveMenuItem.setOnAction(e -> saveTheGame.displaySaveWindow());
+      /*  menuBar.setStyle("-fx-background-color: #472D3C;");
+        menu.setStyle("-fx-font-size: 1em; -fx-background-color:#472D3C; -fx-text-fill: #CFC6B8; -fx-border-radius: 5; -fx-padding: 6 12 12 12; -fx-border-color: #F4B41B; -fx-my-menu-color: #F4B41B;" +
+                "-fx-my-menu-color-highlighted: #CFC6B8;");*/
+        //never get focus on menubar - másképp lépésseknél fel nyílra fókuszt kap
+        menuBar.setFocusTraversable(false); //#CFC6B8                       #F4B41B
+       //színkódok: lilás háttér: #472D3C; szürke betű: #CFC6B8 ; sárga keret, gomb betű: #F4B41B
 
         //beállítások
         Settings settings = new Settings();
@@ -155,22 +178,17 @@ public class Main extends Application {
         inventoryPane.getChildren().add(new VBox(inventoryCanvas));
 
 
-/* OLD
-        GridPane ui = new GridPane();
-        ui.setPrefWidth(200);
-        ui.setPadding(new Insets(10));
 
-        ui.add(new Label("Health: "), 0, 0);
-        ui.add(healthLabel, 1, 0);
-*/
 
 
         BorderPane borderPane = new BorderPane();
 
+        borderPane.setTop(menuBar);
         borderPane.setCenter(canvas);
         borderPane.setRight(vBox);
 
         Scene scene = new Scene(borderPane);
+        scene.getStylesheets().add("/menuStyle.css");
         primaryStage.setScene(scene);
         refresh();
         scene.setOnKeyPressed(this::onKeyPressed);
@@ -213,7 +231,7 @@ public class Main extends Application {
                 break;
             case S:
                 // Player player = map.getPlayer();
-                SaveTheGame saveTheGame = new SaveTheGame(map.getPlayer());
+
                 saveTheGame.displaySaveWindow();
                 //dbManager.savePlayer(player);
                 break;

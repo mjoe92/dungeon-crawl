@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.PlayerModel;
 import javafx.animation.FadeTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -21,6 +22,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
 import com.codecool.dungeoncrawl.display.Settings;
@@ -150,13 +152,21 @@ public class SaveTheGame {
 
     private boolean alreadyExistInDb() {
         setupDbManager();
-        boolean isExist = true;
-        //TODO check if already exist the given name in db - végigiterálunk listán és átállítom truera ha van találat
+        boolean isExist = true; //TODO change from true to false after implemented
+        //TODO check if already exist the given name in db - végigiterálunk listán és átállítom falseról truera ha van találat
+
+        List<PlayerModel> list = dbManager.getAll();
+
+        PlayerModel playerModel = new PlayerModel(player);
+        String saveName = name.getText();
+
+
+
         return isExist;
     }
 
     private void showDialogBox() {
-        //TODO show dialog box with question: Would you like to overwrite the already existing state? YES / NO
+        //show dialog box with question: Would you like to overwrite the already existing state? YES / NO
         /**If the given username already exist in the db the system shows a dialogbox with a question: Would you like to overwrite the already existing state?
          Choosing Yes: the already existing state is updated and all modal window closes
          Choosing No: the dialog closes and the name input field content on the saving dialog is selected again*/
