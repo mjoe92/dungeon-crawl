@@ -8,6 +8,9 @@ import com.google.gson.Gson;
 
 public class SerializeJSON {
 
+    /**stringekbe menti az állapotokat json formátumba, ha akarjuk ebből csinálhatunk txt-t vagy menthetjük databasebe
+     **/
+
     String serializedGamestate;
     String serializedPlayerModel;
 

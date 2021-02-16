@@ -6,6 +6,9 @@ import com.google.gson.Gson;
 
 public class DeserializeJSON {
 
+    /**json formátomú stringekből létrehozza az osztályt, nullokkal lehet bajunk ha marad olyan field ami null
+     **/
+
     String serializedGamestate;
     String serializedPlayerModel;
 
