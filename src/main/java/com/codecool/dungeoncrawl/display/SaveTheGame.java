@@ -78,6 +78,8 @@ public class SaveTheGame {
         saveButton.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
                 "    -fx-border-radius: 5;" +
                 "    -fx-padding: 3 6 6 6; -fx-text-fill: #ffdb00");
+        saveButton.setPrefSize(200, 50);
+      //  saveButton.setMaxHeight(50);
 
         Button cancelButton = new Button("CANCEL");
         cancelButton.setCancelButton(true);
@@ -87,10 +89,11 @@ public class SaveTheGame {
         cancelButton.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
                 "    -fx-border-radius: 5;" +
                 "    -fx-padding: 3 6 6 6; -fx-text-fill: #ffdb00");
-
+        //cancelButton.setMaxWidth(100);
+        cancelButton.setPrefSize(200, 50);
 
         VBox input = new VBox();
-        input.setMaxWidth(200);
+        input.setMaxWidth(300);
         input.setSpacing(20);
         input.setAlignment(Pos.CENTER);
         HBox hbox = new HBox(saveButton, cancelButton);
