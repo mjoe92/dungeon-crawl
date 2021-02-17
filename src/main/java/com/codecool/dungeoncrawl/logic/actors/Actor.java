@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public abstract class Actor implements Drawable {           //résztvevők/bábuk: játékos, csontváz stb
     private Cell cell;
     private Cell prevCell;
-    private GameMap map;
 
     private ArrayList<Items> inventory = new ArrayList<>();
     private int health;
