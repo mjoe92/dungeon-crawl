@@ -1,5 +1,8 @@
 package com.codecool.dungeoncrawl.dao;
 
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 
@@ -10,7 +13,6 @@ import java.util.List;
 
 public class PlayerDaoJdbc implements PlayerDao {
     private DataSource dataSource;
-    private GameStateDao gameStateDao;
 
     public PlayerDaoJdbc(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -22,12 +24,12 @@ public class PlayerDaoJdbc implements PlayerDao {
             String sql = "INSERT INTO player (player_name, hp, x, y, strength, speed) " +
                     "VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setString(1, playerModel.getPlayer().getName());
-            statement.setInt(2, playerModel.getPlayer().getHealth());
-            statement.setInt(3, playerModel.getPlayer().getCell().getX());
-            statement.setInt(4, playerModel.getPlayer().getCell().getY());
-            statement.setInt(5, playerModel.getPlayer().getStrength());
-            statement.setInt(6, playerModel.getPlayer().getSpeed());
+            statement.setString(1, playerModel.getPlayerName());
+            statement.setInt(2, playerModel.getHealth());
+            statement.setInt(3, playerModel.getX());
+            statement.setInt(4, playerModel.getY());
+            statement.setInt(5, playerModel.getStrength());
+            statement.setInt(6, playerModel.getSpeed());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -49,12 +51,13 @@ public class PlayerDaoJdbc implements PlayerDao {
                     "speed = ? " +
                     "WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
-            statement.setString(1, playerModel.getPlayer().getName());
-            statement.setInt(2, playerModel.getPlayer().getHealth());
-            statement.setInt(3, playerModel.getPlayer().getCell().getX());
-            statement.setInt(4, playerModel.getPlayer().getCell().getY());
-            statement.setInt(5, playerModel.getPlayer().getStrength());
-            statement.setInt(6, playerModel.getPlayer().getSpeed());
+            statement.setString(1, playerModel.getPlayerName());
+            statement.setInt(2, playerModel.getHealth());
+            statement.setInt(3, playerModel.getX());
+            statement.setInt(4, playerModel.getY());
+            statement.setInt(5, playerModel.getStrength());
+            statement.setInt(6, playerModel.getSpeed());
+            statement.setInt(7, playerModel.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -67,6 +70,8 @@ public class PlayerDaoJdbc implements PlayerDao {
             String sql = "SELECT id, " +
                     "player_name, " +
                     "hp, " +
+                    "x, " +
+                    "y, " +
                     "strength, " +
                     "speed " +
                     "FROM player " +
@@ -80,18 +85,27 @@ public class PlayerDaoJdbc implements PlayerDao {
             int playerId = rs.getInt(1);
             String name = rs.getString(2);
             int hp = rs.getInt(3);
-            int strength = rs.getInt(4);
-            int speed = rs.getInt(5);
+            int x = rs.getInt(4);
+            int y = rs.getInt(5);
+            int strength = rs.getInt(6);
+            int speed = rs.getInt(7);
 
             //PlayerModel-t visszaadni, miután a Playert létrehoztuk
+            //Ahhoz Cell kell <- GameMap
+/*
+            GameMap loadedMap = null;
+            Cell cell = new Cell(loadedMap, x, y, CellType.FLOOR);
             Player hero = new Player(null); //cell a gameStateDao-ból lesz
             hero.setPlayerName(name);
             hero.setHealth(hp);
             hero.setStrength(strength);
             hero.setSpeed(speed);
-
-            PlayerModel player = new PlayerModel(hero);
-            player.setId(id);
+*/
+            PlayerModel player = new PlayerModel(name, x, y);
+            player.setId(playerId);
+            player.setHealth(hp);
+            player.setStrength(strength);
+            player.setSpeed(speed);
             return player;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -107,7 +121,7 @@ public class PlayerDaoJdbc implements PlayerDao {
                     "x, " +
                     "y, " +
                     "strength, " +
-                    "speed" +
+                    "speed " +
                     "FROM player";
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
@@ -116,18 +130,27 @@ public class PlayerDaoJdbc implements PlayerDao {
                 int playerId = rs.getInt(1);
                 String name = rs.getString(2);
                 int hp = rs.getInt(3);
-                int strength = rs.getInt(4);
-                int speed = rs.getInt(5);
+                int x = rs.getInt(4);
+                int y = rs.getInt(5);
+                int strength = rs.getInt(6);
+                int speed = rs.getInt(7);
 
                 //PlayerModel-t visszaadni, miután a Playert létrehoztuk
-                Player hero = new Player(null); //cell a gameStateDao-ból lesz
+                //Ahhoz Cell kell <- GameMap <- gameStateDao
+/*
+                GameMap currentMap = null;
+                Cell cell = new Cell(currentMap, x, y, CellType.FLOOR);
+                Player hero = new Player(cell); //cell a gameStateDao-ból lesz
                 hero.setPlayerName(name);
                 hero.setHealth(hp);
                 hero.setStrength(strength);
                 hero.setSpeed(speed);
-
-                PlayerModel player = new PlayerModel(hero);
+*/
+                PlayerModel player = new PlayerModel(name, x, y);
                 player.setId(playerId);
+                player.setHealth(hp);
+                player.setStrength(strength);
+                player.setSpeed(speed);
                 result.add(player);
             }
             return result;
