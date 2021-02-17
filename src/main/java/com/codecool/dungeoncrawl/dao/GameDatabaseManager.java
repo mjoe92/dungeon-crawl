@@ -8,6 +8,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
+import java.util.List;
 
 public class GameDatabaseManager {
     private PlayerDao playerDao;
@@ -22,11 +23,23 @@ public class GameDatabaseManager {
         playerDao.add(model);
     }
 
+    public void update(Player player){
+        PlayerModel model = new PlayerModel(player);
+        playerDao.update(model);
+    }
+
+    public List<PlayerModel> getAll() {
+        return playerDao.getAll();
+    }
+
+
     private DataSource connect() throws SQLException {
         PGSimpleDataSource dataSource = new PGSimpleDataSource();
+
         String dbName = DB_NAME.getPd();
         String user = USER_NAME.getPd();
         String password = PASSWORD.getPd();
+
 
         dataSource.setDatabaseName(dbName);
         dataSource.setUser(user);
