@@ -11,6 +11,9 @@ public class Ghost extends Actor {
     private static boolean canPassWall = true;
     private static boolean canPassEmpty = true;
 
+    public Ghost() {
+    }
+
     public Ghost(Cell cell) {
         super(cell);
     }

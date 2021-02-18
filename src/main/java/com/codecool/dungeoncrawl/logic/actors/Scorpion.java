@@ -12,6 +12,9 @@ public class Scorpion extends Actor {
         super(cell);
     }
 
+    public Scorpion() {
+    }
+
     @Override
     public String getTileName() {
         return "scorpion";

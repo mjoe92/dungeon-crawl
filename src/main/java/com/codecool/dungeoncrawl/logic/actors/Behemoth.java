@@ -8,8 +8,13 @@ public class Behemoth extends Actor {
     private int bspeed = 0;
     private int bstrength = 3;
 
+
+
     public Behemoth(Cell cell) {
         super(cell);
+    }
+
+    public Behemoth() {
     }
 
     @Override
