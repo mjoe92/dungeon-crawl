@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.dao.GameStateDao;
-import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
 import java.io.Serializable;
@@ -87,6 +86,7 @@ public class PlayerModel extends BaseModel implements Serializable {
     public void setSavedName(String savedName) {
         this.savedName = savedName;
     }
+
     /*
     public Player getPlayer() {
         return player;
