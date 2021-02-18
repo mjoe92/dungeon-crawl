@@ -79,12 +79,12 @@ public class PlayerModel extends BaseModel implements Serializable {
         this.strength = strength;
     }
 
-    public void setSavedName(String savedName) {
-        this.savedName = savedName;
-    }
-
     public String getSavedName() {
         return savedName;
+    }
+
+    public void setSavedName(String savedName) {
+        this.savedName = savedName;
     }
 
     /*
