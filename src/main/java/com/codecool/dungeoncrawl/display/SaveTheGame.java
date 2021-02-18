@@ -164,8 +164,8 @@ public class SaveTheGame {
 
     private boolean alreadyExistInDb() {
         setupDbManager();
-        boolean isExist = false; //TODO change from true to false after implemented
-        //TODO check if already exist the given name in db - végigiterálunk listán és átállítom falseról truera ha van találat
+        boolean isExist = false; //
+        // check if already exist the given name in db - végigiterálunk listán és átállítom falseról truera ha van találat
 
         List<PlayerModel> list = dbManager.getAll();
         String saveName = name.getText();
@@ -203,7 +203,7 @@ public class SaveTheGame {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
             // ... user chose "Yes"
-            dbManager.update(player); //TODO implement update method in PlayerDaoJDBC
+            dbManager.update(player);
             alert.close();
             window.close();
 
@@ -215,7 +215,7 @@ public class SaveTheGame {
     }
 
     private void setupDbManager(){
-//TODO onKeyPressed event and setup db implement correctly
+
         dbManager = new GameDatabaseManager();
         try {
             dbManager.setup();
