@@ -22,14 +22,14 @@ public class Export {
     public void createSaveDialog() {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
-        fc.setInitialFileName("export.txt");
+        fc.setInitialFileName("export");
         File f = fc.showSaveDialog(window);
         if (f != null) {
             //saveTextToFile("Ez itt a JSON adatok helye\nEz itt a JSON adatok helye", f);
             System.out.println("Path to save: " + f.getAbsolutePath());
             path = f.getAbsolutePath();
         }
-
+        saveTheGame();
     }
 
     public void saveTheGame() {

@@ -44,6 +44,27 @@ public abstract class Actor implements Drawable {           //résztvevők/bábu
     private boolean canPassEmpty = false;
     private static boolean canMove = true;
 
+    private int x;
+    private int y;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+
+
     public Actor() {
     }
 
@@ -51,6 +72,9 @@ public abstract class Actor implements Drawable {           //résztvevők/bábu
         this.cell = cell;
         this.cell.setActor(this);
         setUnderAttack(false);
+
+        this.x = cell.getX();
+        this.y = cell.getY();
     }
 
     public void move(int dx, int dy) {

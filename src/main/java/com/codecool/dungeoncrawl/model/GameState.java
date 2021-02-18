@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.List;
 
 public class GameState extends BaseModel implements Serializable {
-    private Date savedAt;
+    transient private Date savedAt;
     private String currentMap;
     transient private List<String> discoveredMaps = new ArrayList<>(); //nincs szükségem erre gsonhoz
     transient private PlayerModel player;

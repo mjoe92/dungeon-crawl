@@ -7,6 +7,9 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Items;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.serialize.DeserializeJSON;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -85,9 +88,7 @@ public class Main extends Application {
     GameDatabaseManager dbManager;
     MenuBar menuBar = new MenuBar();
     SaveTheGame saveTheGame = new SaveTheGame(map);
-    Load load = new Load(map);
-    Import importGame = new Import(map);
-    Export exportGame = new Export(map);
+    String path;
 
     static Stage window;
 
@@ -100,6 +101,7 @@ public class Main extends Application {
 
         map.getPlayer().setCurrentMap("map.txt");
     //    setupDbManager();
+
 
         window = primaryStage;
         window.initStyle(StageStyle.UTILITY);
@@ -119,12 +121,17 @@ public class Main extends Application {
         menuBar.getMenus().add(menu);
 
         //Menuelem event TODO load, export, import event
+        Load load = new Load(map);
+        Import importGame = new Import(map);
+        Export exportGame;
+
+
         saveMenuItem.setOnAction(e -> saveTheGame.displaySaveWindow());
         loadMenuItem.setOnAction(e -> load.displayLoadWindow());
 
-
+        exportGame = new Export(map);
         exportMenuItem.setOnAction(e -> exportGame.createSaveDialog());
-        importMenuItem.setOnAction(e -> importGame.createLoadDialog());
+        importMenuItem.setOnAction(e -> createLoadDialog());
       /*  menuBar.setStyle("-fx-background-color: #472D3C;");
         menu.setStyle("-fx-font-size: 1em; -fx-background-color:#472D3C; -fx-text-fill: #CFC6B8; -fx-border-radius: 5; -fx-padding: 6 12 12 12; -fx-border-color: #F4B41B; -fx-my-menu-color: #F4B41B;" +
                 "-fx-my-menu-color-highlighted: #CFC6B8;");*/
@@ -267,14 +274,14 @@ public class Main extends Application {
         if (map.getPlayer().isCanMove()) {
             for (Actor monster : map.getMonsters()) {
 
-                if (monster.getHealth() == 0) {
+              /*  if (monster.getHealth() == 0) {
                     // System.out.println("Monster to remove:" + monster);
                     //System.out.println("Monsters before remove:" + map.getMonsters().toString());
 
                     map.removeMonster(monster);
 
                     //   System.out.println("Monsters after removed:" + map.getMonsters().toString());
-                }
+                }*/
 
                 if (monster.getHealth() > 0) {
                     RandomMovement monsterMove = new RandomMovement();
@@ -436,33 +443,52 @@ public class Main extends Application {
         return null;
     }
 
-    public static String createLoadDialog() {
+    public void createLoadDialog() {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
         fc.setInitialFileName("export.txt");
         File f = fc.showOpenDialog(window);
 
-//        StringBuilder sb = new StringBuilder();
-//
-//        if (f != null) {
-//            try {
-//                Scanner fileReader = new Scanner(f);
-//
-//                while (fileReader.hasNextLine()) {
-//                    sb.append(fileReader.nextLine());
-//                }
-//                fileReader.close();
-//            } catch (IOException e) {
-//                return "";
-//            }
-//        }
         if (f != null) {
             System.out.println("Path to load: " + f.getAbsolutePath());
 
-
-
-            return f.getAbsolutePath();
+            path = f.getAbsolutePath();
         }
-        return null;
+
+        loadGame();
     }
+
+    private void loadGame() {
+
+        GameState gameStateToLoad = DeserializeJSON.importGameState(path);
+        PlayerModel playerModelToLoad = gameStateToLoad.getPlayer();
+
+        String currentmap = gameStateToLoad.getCurrentMap();
+        map = MapLoader.loadMap(currentmap);
+
+        Player player = map.getPlayer();
+
+        map.setMonsters(new ArrayList<>(gameStateToLoad.getMonsters()));
+
+        for (Actor mon:map.getMonsters()) {
+
+            mon.setCell(map.getCell(mon.getX(),mon.getY()));
+
+        }
+
+
+
+        player.setPlayerName(playerModelToLoad.getPlayerName());
+        player.setCurrentMap(currentmap);
+        player.setInventory(new ArrayList<>(playerModelToLoad.getInventory()));
+        player.setCell(map.getCell(playerModelToLoad.getX(), playerModelToLoad.getY())); //ezzel teszem be helyére
+        player.setHealth(playerModelToLoad.getHealth());
+        player.setStrength(playerModelToLoad.getStrength());
+        player.setSpeed(playerModelToLoad.getSpeed());
+        player.setCanPassWall(playerModelToLoad.isCanPassWall());
+
+        refresh();
+
+    }
+
 }
