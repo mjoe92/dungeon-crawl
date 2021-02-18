@@ -36,7 +36,7 @@ public class SerializeJSONTest {
         map.getPlayer().setSpeed(2);
 
         //TODO inventory to be serialized
-        SerializeJSON.saveSerializedGamestate(gameState, "TestOutput/saved");
+        SerializeJSON.saveSerializedGamestate(gameState, "TestOutput/saved2");
 
 
 
@@ -47,7 +47,7 @@ public class SerializeJSONTest {
     void importTest(){
 
         exportGame();
-        GameState gameState2 = DeserializeJSON.importGameState("TestOutput/saved");
+        GameState gameState2 = DeserializeJSON.importGameState("TestOutput/saved2");
 
         assertEquals(gameState, gameState2);
 
