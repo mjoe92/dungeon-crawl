@@ -15,7 +15,7 @@ public class Cell implements Drawable {
     private boolean actorCanStand = true;
     private Door door;
 
-    Cell(GameMap gameMap, int x, int y, CellType type) {
+    public Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;
         this.x = x;
         this.y = y;
