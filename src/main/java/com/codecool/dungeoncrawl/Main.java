@@ -21,10 +21,15 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.*;
 
 import com.codecool.dungeoncrawl.AI.AttackMovement;
 import com.codecool.dungeoncrawl.AI.RandomMovement;
@@ -53,7 +58,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -117,6 +121,10 @@ public class Main extends Application {
         //Menuelem event TODO load, export, import event
         saveMenuItem.setOnAction(e -> saveTheGame.displaySaveWindow());
         loadMenuItem.setOnAction(e -> load.displayLoadWindow());
+
+
+        exportMenuItem.setOnAction(e -> createSaveDialog());
+        importMenuItem.setOnAction(e -> createLoadDialog());
       /*  menuBar.setStyle("-fx-background-color: #472D3C;");
         menu.setStyle("-fx-font-size: 1em; -fx-background-color:#472D3C; -fx-text-fill: #CFC6B8; -fx-border-radius: 5; -fx-padding: 6 12 12 12; -fx-border-color: #F4B41B; -fx-my-menu-color: #F4B41B;" +
                 "-fx-my-menu-color-highlighted: #CFC6B8;");*/
@@ -402,5 +410,50 @@ public class Main extends Application {
 
     public static void exitGame() {
         window.close();
+    }
+
+    private static void saveTextToFile(String content, File file) {
+        try {
+            PrintWriter writer;
+            writer = new PrintWriter(file);
+            writer.println(content);
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("Írási hiba!");
+        }
+    }
+
+    public static void createSaveDialog() {
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
+        fc.setInitialFileName("export.txt");
+        File f = fc.showSaveDialog(window);
+        if (f != null) {
+            saveTextToFile("Ez itt a JSON adatok helye\nEz itt a JSON adatok helye", f);
+        }
+    }
+
+    public static String createLoadDialog() {
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
+        fc.setInitialFileName("export.txt");
+        File f = fc.showOpenDialog(window);
+
+        StringBuilder sb = new StringBuilder();
+
+        if (f != null) {
+            try {
+                Scanner fileReader = new Scanner(f);
+
+                while (fileReader.hasNextLine()) {
+                    sb.append(fileReader.nextLine());
+                }
+                fileReader.close();
+            } catch (IOException e) {
+                return "";
+            }
+        }
+        //System.out.println(sb.toString());
+        return sb.toString();
     }
 }
