@@ -2,8 +2,10 @@ package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.dao.GameStateDao;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.Items;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class PlayerModel extends BaseModel implements Serializable {
 
@@ -15,8 +17,10 @@ public class PlayerModel extends BaseModel implements Serializable {
     private int speed;
     private int strength;
     private String savedName;
+    private ArrayList<Items> inventory;
+    private boolean canPassWall;
 
-    private GameStateDao gameStateDao;
+    transient private GameStateDao gameStateDao;        //transient mert nem kell gsonhoz
 
     public PlayerModel(String playerName, int x, int y) {
         //this.playerName = player.getName();
@@ -29,6 +33,9 @@ public class PlayerModel extends BaseModel implements Serializable {
         this.playerName = player.getName();
         this.x = player.getCell().getX();
         this.y = player.getCell().getY();
+        this.inventory = player.getInventory();
+        this.canPassWall = player.isCanPassWall();
+
     }
 
     public String getPlayerName() {
@@ -86,6 +93,23 @@ public class PlayerModel extends BaseModel implements Serializable {
     public void setSavedName(String savedName) {
         this.savedName = savedName;
     }
+
+    public ArrayList<Items> getInventory() {
+        return inventory;
+    }
+
+    public void setInventory(ArrayList<Items> inventory) {
+        this.inventory = inventory;
+    }
+
+    public boolean isCanPassWall() {
+        return canPassWall;
+    }
+
+    public void setCanPassWall(boolean canPassWall) {
+        this.canPassWall = canPassWall;
+    }
+
 
     /*
     public Player getPlayer() {
