@@ -155,13 +155,13 @@ public class SaveTheGame {
     }
 
     private void onKeyPressed() {
-
+        player.setSavedName(name.getText());
         setupDbManager();
 
          if (alreadyExistInDb()) {
             showDialogBox();
         } else {
-             player.setSavedName(name.getText());
+
              dbManager.savePlayer();
              window.close();
          }
