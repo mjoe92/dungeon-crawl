@@ -1,8 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.display.Load;
-import com.codecool.dungeoncrawl.display.SaveTheGame;
+import com.codecool.dungeoncrawl.display.*;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
@@ -33,7 +32,6 @@ import java.util.*;
 
 import com.codecool.dungeoncrawl.AI.AttackMovement;
 import com.codecool.dungeoncrawl.AI.RandomMovement;
-import com.codecool.dungeoncrawl.display.Settings;
 import com.codecool.dungeoncrawl.logic.*;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -88,6 +86,8 @@ public class Main extends Application {
     MenuBar menuBar = new MenuBar();
     SaveTheGame saveTheGame = new SaveTheGame(map);
     Load load = new Load(map);
+    Import importGame = new Import(map);
+    Export exportGame = new Export(map);
 
     static Stage window;
 
@@ -123,8 +123,8 @@ public class Main extends Application {
         loadMenuItem.setOnAction(e -> load.displayLoadWindow());
 
 
-        exportMenuItem.setOnAction(e -> createSaveDialog());
-        importMenuItem.setOnAction(e -> createLoadDialog());
+        exportMenuItem.setOnAction(e -> exportGame.createSaveDialog());
+        importMenuItem.setOnAction(e -> importGame.createLoadDialog());
       /*  menuBar.setStyle("-fx-background-color: #472D3C;");
         menu.setStyle("-fx-font-size: 1em; -fx-background-color:#472D3C; -fx-text-fill: #CFC6B8; -fx-border-radius: 5; -fx-padding: 6 12 12 12; -fx-border-color: #F4B41B; -fx-my-menu-color: #F4B41B;" +
                 "-fx-my-menu-color-highlighted: #CFC6B8;");*/
@@ -458,6 +458,8 @@ public class Main extends Application {
 //        }
         if (f != null) {
             System.out.println("Path to load: " + f.getAbsolutePath());
+
+
 
             return f.getAbsolutePath();
         }
