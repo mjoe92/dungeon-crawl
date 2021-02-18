@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl.logic.items;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class Key extends Items{
 

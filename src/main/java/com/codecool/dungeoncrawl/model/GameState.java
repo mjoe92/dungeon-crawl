@@ -23,6 +23,9 @@ public class GameState extends BaseModel implements Serializable {
 
     }
 
+    public GameState() {
+    }
+
     public GameState(GameMap map, PlayerModel playerModel) {        //ezt kell használnunk hogy megkapja az aktuális id-t
         this.currentMap = map.getPlayer().getCurrentMap();
         this.player = playerModel;

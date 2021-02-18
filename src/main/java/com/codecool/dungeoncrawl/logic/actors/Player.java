@@ -23,6 +23,9 @@ public class Player extends Actor {
         this.speed = 1;
     }
 
+    public Player() {
+    }
+
     public String getTileName() {       //csempe neve
         return playerName;
     }

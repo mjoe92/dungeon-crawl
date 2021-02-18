@@ -4,8 +4,10 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.door.Door;
 import com.codecool.dungeoncrawl.logic.items.Items;
 
+import java.io.Serializable;
 
-public class Cell implements Drawable {
+
+public class Cell implements Drawable, Serializable {
 
     private CellType type;
     private Actor actor;
@@ -14,6 +16,9 @@ public class Cell implements Drawable {
     private int x, y;
     private boolean actorCanStand = true;
     private Door door;
+
+    public Cell() {
+    }
 
     Cell(GameMap gameMap, int x, int y, CellType type) {
         this.gameMap = gameMap;

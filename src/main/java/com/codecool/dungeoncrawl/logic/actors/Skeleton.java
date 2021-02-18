@@ -12,6 +12,9 @@ public class Skeleton extends Actor {
         super(cell);
     }
 
+    public Skeleton() {
+    }
+
     @Override
     public String getTileName() {
         return "skeleton";
