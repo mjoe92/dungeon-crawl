@@ -17,10 +17,22 @@ public class SerializeJSON {
     GameState gameState;
     PlayerModel playerModel;
 
+    public SerializeJSON(GameState gameState) {
+        this.gameState = gameState;            //TODO change parameter to gamemap and generate gamestate from that?
+        setSerializedGamestate(); //TODO after test make it accessible
+
+    }
+
+    public SerializeJSON(Player player) {
+
+        this.playerModel = new PlayerModel(player);
+        setSerializedPlayerModel();
+    }
+
     public SerializeJSON(GameState gameState, Player player) {
         this.gameState = gameState;                         //TODO change parameter to gamemap and generate gamestate from that
         this.playerModel = new PlayerModel(player);
-        //setSerializedGamestate();
+        setSerializedGamestate(); //TODO after test make it accessible
         setSerializedPlayerModel();
     }
 
