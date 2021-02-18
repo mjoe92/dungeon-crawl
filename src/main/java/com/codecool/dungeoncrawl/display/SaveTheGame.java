@@ -164,14 +164,17 @@ public class SaveTheGame {
 
     private boolean alreadyExistInDb() {
         setupDbManager();
-        boolean isExist = true; //TODO change from true to false after implemented
+        boolean isExist = false; //TODO change from true to false after implemented
         //TODO check if already exist the given name in db - végigiterálunk listán és átállítom falseról truera ha van találat
 
         List<PlayerModel> list = dbManager.getAll();
-
-        PlayerModel playerModel = new PlayerModel(player);
         String saveName = name.getText();
 
+        for (PlayerModel savedmodel: list) {
+            if (saveName.equals(savedmodel.getSavedName())) {
+                isExist = true;
+            }
+        }
 
 
         return isExist;
