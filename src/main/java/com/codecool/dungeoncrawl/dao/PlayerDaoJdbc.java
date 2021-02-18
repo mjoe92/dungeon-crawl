@@ -128,12 +128,13 @@ public class PlayerDaoJdbc implements PlayerDao {
             List<PlayerModel> result = new ArrayList<>();
             while (rs.next()) {
                 int playerId = rs.getInt(1);
-                String name = rs.getString(2);
+                String playerName = rs.getString(2);
                 int hp = rs.getInt(3);
                 int x = rs.getInt(4);
                 int y = rs.getInt(5);
                 int strength = rs.getInt(6);
                 int speed = rs.getInt(7);
+                String savedName = rs.getString(8);
 
                 //PlayerModel-t visszaadni, miután a Playert létrehoztuk
                 //Ahhoz Cell kell <- GameMap <- gameStateDao
@@ -141,12 +142,12 @@ public class PlayerDaoJdbc implements PlayerDao {
                 GameMap currentMap = null;
                 Cell cell = new Cell(currentMap, x, y, CellType.FLOOR);
                 Player hero = new Player(cell); //cell a gameStateDao-ból lesz
-                hero.setPlayerName(name);
+                hero.setPlayerName(playerName);
                 hero.setHealth(hp);
                 hero.setStrength(strength);
                 hero.setSpeed(speed);
 */
-                PlayerModel player = new PlayerModel(name, x, y);
+                PlayerModel player = new PlayerModel(playerName, x, y);
                 player.setId(playerId);
                 player.setHealth(hp);
                 player.setStrength(strength);
