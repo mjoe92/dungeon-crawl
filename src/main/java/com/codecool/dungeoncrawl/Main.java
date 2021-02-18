@@ -423,14 +423,17 @@ public class Main extends Application {
         }
     }
 
-    public static void createSaveDialog() {
+    public static String createSaveDialog() {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
         fc.setInitialFileName("export.txt");
         File f = fc.showSaveDialog(window);
         if (f != null) {
-            saveTextToFile("Ez itt a JSON adatok helye\nEz itt a JSON adatok helye", f);
+            //saveTextToFile("Ez itt a JSON adatok helye\nEz itt a JSON adatok helye", f);
+            System.out.println("Path to save: " + f.getAbsolutePath());
+            return f.getAbsolutePath();
         }
+        return null;
     }
 
     public static String createLoadDialog() {
@@ -439,21 +442,25 @@ public class Main extends Application {
         fc.setInitialFileName("export.txt");
         File f = fc.showOpenDialog(window);
 
-        StringBuilder sb = new StringBuilder();
-
+//        StringBuilder sb = new StringBuilder();
+//
+//        if (f != null) {
+//            try {
+//                Scanner fileReader = new Scanner(f);
+//
+//                while (fileReader.hasNextLine()) {
+//                    sb.append(fileReader.nextLine());
+//                }
+//                fileReader.close();
+//            } catch (IOException e) {
+//                return "";
+//            }
+//        }
         if (f != null) {
-            try {
-                Scanner fileReader = new Scanner(f);
+            System.out.println("Path to load: " + f.getAbsolutePath());
 
-                while (fileReader.hasNextLine()) {
-                    sb.append(fileReader.nextLine());
-                }
-                fileReader.close();
-            } catch (IOException e) {
-                return "";
-            }
+            return f.getAbsolutePath();
         }
-        //System.out.println(sb.toString());
-        return sb.toString();
+        return null;
     }
 }
