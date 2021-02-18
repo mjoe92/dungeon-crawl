@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.model;
 
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 
 import java.io.Serializable;
@@ -10,8 +11,8 @@ import java.util.List;
 public class GameState extends BaseModel implements Serializable {
     private Date savedAt;
     private String currentMap;
-    private List<String> discoveredMaps = new ArrayList<>();
-    private PlayerModel player;
+    transient private List<String> discoveredMaps = new ArrayList<>(); //nincs szükségem erre gsonhoz
+    transient private PlayerModel player;
     private List<Actor> monsters;
 
     public GameState(String currentMap, Date savedAt, PlayerModel player) {
@@ -21,11 +22,10 @@ public class GameState extends BaseModel implements Serializable {
 
     }
 
-    public GameState(String currentMap, Date savedAt, PlayerModel player, List<Actor> monsters) {
+    public GameState(String currentMap, GameMap map) {
         this.currentMap = currentMap;
-        this.savedAt = savedAt;
-        this.player = player;
-        this.monsters = monsters;
+        this.player = new PlayerModel(map.getPlayer());
+        this.monsters = map.getMonsters();
     }
 
     public Date getSavedAt() {
