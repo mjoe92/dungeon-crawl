@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.dao.GameStateDao;
-import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Items;
 
@@ -110,6 +109,7 @@ public class PlayerModel extends BaseModel implements Serializable {
     public void setCanPassWall(boolean canPassWall) {
         this.canPassWall = canPassWall;
     }
+
 
     /*
     public Player getPlayer() {

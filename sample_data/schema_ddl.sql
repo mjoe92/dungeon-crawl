@@ -14,7 +14,8 @@ CREATE TABLE public.player (
     x integer NOT NULL,
     y integer NOT NULL,
     strength integer NOT NULL,
-    speed integer NOT NULL
+    speed integer NOT NULL,
+    game_name text NOT NULL
 );
 
 ALTER TABLE ONLY public.game_state
