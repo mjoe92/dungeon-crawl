@@ -38,6 +38,7 @@ public class PlayerModel extends BaseModel implements Serializable {
         this.health = player.getHealth();
         this.speed = player.getSpeed();
         this.strength = player.getStrength();
+        this.savedName = player.getSavedName();
 
     }
 

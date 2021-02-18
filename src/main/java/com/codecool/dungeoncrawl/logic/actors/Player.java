@@ -13,6 +13,7 @@ public class Player extends Actor {
     private int strength = 5;
     private int health;
     private int speed;
+    private String savedName;
 
 
     public Player(Cell cell) {
@@ -68,6 +69,18 @@ public class Player extends Actor {
     }
 
     public String getName() {
+        return playerName;
+    }
+
+    public String getSavedName() {
+        return savedName;
+    }
+
+    public void setSavedName(String savedName) {
+        this.savedName = savedName;
+    }
+
+    public String getPlayerName() {
         return playerName;
     }
 
