@@ -44,11 +44,11 @@ public class MapLoader {
                             break;
                         case 'k':
                             cell.setType(CellType.FLOOR);
-                            new Key(cell);
+                            map.putItemsToList(new Key(cell));
                             break;
                         case 'w':
                             cell.setType(CellType.FLOOR);
-                            new Sword(cell);
+                            map.putItemsToList(new Sword(cell));
                             break;
                         case 's':
                             cell.setType(CellType.FLOOR);
@@ -68,19 +68,15 @@ public class MapLoader {
                             break;
                         case 'c':
                             cell.setType(CellType.FLOOR);
-                            new Crown(cell);
+                            map.putItemsToList( new Crown(cell));
                             break;
                         case 'p':
                             cell.setType(CellType.FLOOR);
-                            new FullPotion(cell);
+                            map.putItemsToList(new FullPotion(cell));
                             break;
                         case 'd':
                             cell.setType(CellType.CLOSEDDOOR);
                             new ClosedDoor(cell);
-                           /* if (cell.getDoor().isOpen()) {
-                                cell.setType(CellType.FLOOR);
-                                new OpenDoor(cell);
-                            }*/
                             break;
                         default:
                             throw new RuntimeException("Unrecognized character: '" + line.charAt(x) + "'");

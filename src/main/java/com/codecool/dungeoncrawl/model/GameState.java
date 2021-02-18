@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.items.Items;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ public class GameState extends BaseModel implements Serializable {
     transient private List<String> discoveredMaps = new ArrayList<>(); //nincs szükségem erre gsonhoz
     transient private PlayerModel player;
     private List<Actor> monsters;
+    private List<Items> itemsOnMap;
 
     public GameState(String currentMap, Date savedAt, PlayerModel player) {
         this.currentMap = currentMap;
@@ -31,6 +33,7 @@ public class GameState extends BaseModel implements Serializable {
         this.player = playerModel;
         this.monsters = new ArrayList<>(map.getMonsters()) ;
         this.savedAt = new Date(System.currentTimeMillis());
+        this.itemsOnMap = new ArrayList<>(map.getItemsOnMap());
     }
 
     public GameState(GameMap map) {
@@ -77,5 +80,13 @@ public class GameState extends BaseModel implements Serializable {
 
     public void setMonsters(List<Actor> monsters) {
         this.monsters = monsters;
+    }
+
+    public List<Items> getItemsOnMap() {
+        return itemsOnMap;
+    }
+
+    public void setItemsOnMap(List<Items> itemsOnMap) {
+        this.itemsOnMap = itemsOnMap;
     }
 }

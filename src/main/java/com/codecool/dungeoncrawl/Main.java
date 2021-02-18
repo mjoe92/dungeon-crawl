@@ -473,21 +473,28 @@ public class Main extends Application {
         for (Actor mon:map.getMonsters()) {
 
             mon.setCell(map.getCell(mon.getX(),mon.getY()));
-           // map.putMonster(mon);
+            map.getCell(mon.getX(),mon.getY()).setActor(mon);
 
         }
 
-
-
+        //set player stuff
         player.setPlayerName(playerModelToLoad.getPlayerName());
         player.setCurrentMap(currentmap);
         player.setInventory(new ArrayList<>(playerModelToLoad.getInventory()));
         player.setCell(map.getCell(playerModelToLoad.getX(), playerModelToLoad.getY())); //ezzel teszem be helyére
-        map.setPlayer(player);
+        map.getCell(playerModelToLoad.getX(), playerModelToLoad.getY()).setActor(player);
         player.setHealth(playerModelToLoad.getHealth());
         player.setStrength(playerModelToLoad.getStrength());
         player.setSpeed(playerModelToLoad.getSpeed());
         player.setCanPassWall(playerModelToLoad.isCanPassWall());
+
+        //set items on map
+
+        map.setItemsOnMap(new ArrayList<>(gameStateToLoad.getItemsOnMap()));
+
+        for (Items it :map.getItemsOnMap()) {
+            map.getCell(it.getX(), it.getY()).setItem(it);
+        }
 
         refresh();
 

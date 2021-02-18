@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.logic;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.logic.items.Items;
 
 import java.util.ArrayList;
 
@@ -12,6 +13,7 @@ public class GameMap {
 
     private static Player player;
     private static ArrayList<Actor> monsters = new ArrayList<>();
+    private static ArrayList<Items> itemsOnMap = new ArrayList<>();
 
     public GameMap(int width, int height, CellType defaultCellType) {  //const létrehozza  apályát magassag, hossz, alap mező alapján
         this.width = width;
@@ -47,6 +49,29 @@ public class GameMap {
 
     public void putMonster(Actor monster) {
         this.monsters.add(monster);
+    }
+
+    public void putItemsToList(Items item){
+        this.itemsOnMap.add(item);
+    }
+
+    public ArrayList<Items> getItemsOnMap() {
+        return itemsOnMap;
+    }
+
+    public void setItemsOnMap(ArrayList<Items> itemsOnMap) {
+        GameMap.itemsOnMap = itemsOnMap;
+    }
+
+    public void removeItemFromList(Items item){
+        for (int i = 0; i< itemsOnMap.size(); i++) {
+            Items it = itemsOnMap.get(i);
+            if (it.getX() == item.getX() && it.getY() == item.getY() && it.getTileName().equals(item.getTileName())){
+                itemsOnMap.remove(i);
+            }
+        }
+
+
     }
 
     public void removeMonster(Actor monster) {

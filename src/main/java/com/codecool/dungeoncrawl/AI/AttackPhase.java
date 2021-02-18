@@ -32,11 +32,8 @@ public class AttackPhase {
 
     public void loseHealth() {
         monster.setUnderAttack(true);
-        System.out.println("loseHealth method start");
+
         monster.setHealth(monster.getHealth() - player.getStrength());
-        System.out.println("Monsterhealth: " + monster.getHealth()
-                + " |  player strength: " + player.getStrength()
-                + " |  monster sethealth param: " + (monster.getHealth() - player.getStrength()));
 
         try {
             TimeUnit.MILLISECONDS.sleep(50);
@@ -46,13 +43,12 @@ public class AttackPhase {
         // AUDIO
 
         player.setHealth(player.getHealth() - monster.getStrength());
-        System.out.println("  Player health: " + player.getHealth());
+        
         player.setUnderAttack(true);
 
         if (monster.getHealth() < 1) {
             monsterDies();
-           // player.setUnderAttack(false);
-            //monster.setUnderAttack(false);
+
 
         }
         if (player.getHealth() < 1) {
@@ -62,12 +58,11 @@ public class AttackPhase {
     }
 
     public void monsterDies() {
-        System.out.println("  monsterDies started");
+
         monster.getCell().setType(CellType.BONES);
-        System.out.println("  Monster speed: " + monster.getSpeed() + " Monster health: " + monster.getHealth());
+
         monster.setSpeed(0);
-        System.out.println("     Monster speed after set 0: " + monster.getSpeed());
-        System.out.println("     PLayer health: " + player.getHealth());
+
         monster.getCell().setActor(null);
 
         //after death poition shows up
@@ -93,22 +88,17 @@ public class AttackPhase {
         }
 
 
-    //    System.out.println("  monsterdies ended");
-     //   System.out.println("----------------------");
-
         monster.setHealth(0);
     }
 
     public void playerDies() {
-        System.out.println("  playerDies started");
+
         player.getCell().setType(CellType.CROSS);
-        System.out.println("   PLayer health: " + player.getHealth());
-        System.out.println("   Monster speed: " + monster.getSpeed() + " Monster health: " + monster.getHealth());
+
         player.getCell().setActor(null);
-        System.out.println("  player dies ended");
-        System.out.println("---------------------");
+
         player.setHealth(0);
-      //  gameOver.displayLose();
+
     }
 
     public int[] freePosition() {
