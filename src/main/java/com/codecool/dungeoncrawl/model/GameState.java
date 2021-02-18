@@ -12,7 +12,7 @@ public class GameState extends BaseModel implements Serializable {
     private Date savedAt;
     private String currentMap;
     transient private List<String> discoveredMaps = new ArrayList<>(); //nincs szükségem erre gsonhoz
-    private PlayerModel player;
+    transient private PlayerModel player;
     private List<Actor> monsters;
 
     public GameState(String currentMap, Date savedAt, PlayerModel player) {
