@@ -4,9 +4,9 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Behemoth extends Actor {
 
-    private int health = 15;
-    private int speed = 0;
-    private int strength = 3;
+    private int bhealth = 15;
+    private int bspeed = 0;
+    private int bstrength = 3;
 
     public Behemoth(Cell cell) {
         super(cell);
@@ -19,30 +19,30 @@ public class Behemoth extends Actor {
 
     @Override
     public int getHealth() {
-        return health;
+        return bhealth;
     }
 
     @Override
     public int getSpeed() {
-        return speed;
+        return bspeed;
     }
 
     @Override
     public int getStrength() {
-        return strength;
+        return bstrength;
     }
 
     @Override
     public void setHealth(int health) {
-        this.health = health;
+        this.bhealth = health;
     }
 
     @Override
     public void setSpeed(int speed) {
-        this.speed = speed;
+        this.bspeed = speed;
     }
 
     public void setStrength(int strength) {
-        this.strength = strength;
+        this.bstrength = strength;
     }
 }

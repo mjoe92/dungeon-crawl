@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Key extends Items{
 
+    private String TileName = "key";
 
     public Key(Cell cell) {
         super(cell);
@@ -11,6 +12,6 @@ public class Key extends Items{
 
     @Override
     public String getTileName() {
-        return "key";
+        return TileName;
     }
 }

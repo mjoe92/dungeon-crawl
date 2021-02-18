@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.items.Items;
 import com.codecool.dungeoncrawl.logic.items.Key;
+import com.codecool.dungeoncrawl.logic.items.Sword;
 import com.codecool.dungeoncrawl.model.GameState;
 import org.junit.jupiter.api.Test;
 
@@ -24,11 +25,13 @@ public class SerializeJSONTest {
         GameMap map = MapLoader.loadMap(mapName);
         GameState gameState = new GameState(mapName,map);
         inventory.add(new Key(map.getCell(1,1)));
+        inventory.add(new Sword(map.getCell(10,1)));
         map.getPlayer().setHealth(10);
         map.getPlayer().setStrength(5);
         map.getPlayer().setPlayerName("Kiss Gizi");
         map.getPlayer().setCanMove(true);
         map.getPlayer().setSpeed(2);
+        map.getPlayer().setInventory(inventory);
 
         //TODO inventory to be serialized
         SerializeJSON ser = new SerializeJSON(map.getPlayer());
@@ -57,10 +60,6 @@ public class SerializeJSONTest {
 
         System.out.println(ser.serializedGamestate);
 
-        System.out.println("-----------------");
-        System.out.println();
-
-        System.out.println(ser.serializedPlayerModel);
 
     }
 

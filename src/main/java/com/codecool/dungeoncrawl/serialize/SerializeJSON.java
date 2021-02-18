@@ -10,7 +10,7 @@ public class SerializeJSON {
 
     /**stringekbe menti az állapotokat json formátumba, ha akarjuk ebből csinálhatunk txt-t vagy menthetjük databasebe
      **/
-
+//TODO make List of objects to be serialized - List<Items> inventory in PlayerModel and List<Actor> monsters
     String serializedGamestate;
     String serializedPlayerModel;
 
