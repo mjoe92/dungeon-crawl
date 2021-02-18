@@ -20,7 +20,7 @@ public class SerializeJSON {
     public SerializeJSON(GameState gameState, Player player) {
         this.gameState = gameState;                         //TODO change parameter to gamemap and generate gamestate from that
         this.playerModel = new PlayerModel(player);
-        setSerializedGamestate();
+        //setSerializedGamestate();
         setSerializedPlayerModel();
     }
 
