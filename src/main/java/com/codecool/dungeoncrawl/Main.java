@@ -95,7 +95,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
 
         map.getPlayer().setCurrentMap("map.txt");
-        setupDbManager();
+    //    setupDbManager();
 
         window = primaryStage;
         window.initStyle(StageStyle.UTILITY);

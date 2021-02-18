@@ -16,8 +16,8 @@ public class GameDatabaseManager {
     private PlayerDao playerDao;
     private GameStateDao gameStateDao;
     GameMap map;
-    PlayerModel model = new PlayerModel(map.getPlayer());
-    GameState gameState = new GameState(map);
+    PlayerModel model;
+    GameState gameState;
 
 
     public void setup(GameMap map) throws SQLException {
@@ -25,6 +25,8 @@ public class GameDatabaseManager {
         DataSource dataSource = connect();
         playerDao = new PlayerDaoJdbc(dataSource);
         gameStateDao = new GameStateDaoJdbc(dataSource);
+        this.model = new PlayerModel(map.getPlayer());
+        this.gameState = new GameState(map);
     }
 
     public void savePlayer() {
