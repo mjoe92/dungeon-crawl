@@ -1,9 +1,13 @@
 package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.dao.PlayerDao;
+
 import javafx.animation.FadeTransition;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -25,10 +29,13 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
+import java.util.stream.Collectors;
+
 import com.codecool.dungeoncrawl.display.Settings;
 
 public class SaveTheGame {
     private static Stage window;
+    private static List<String> savedGameList;
     //TODO Settings/getPlayerName-t lehetne megadni alapértelmezettnek de nem látja innen
     final TextField name = new TextField("Name");
 
@@ -37,6 +44,10 @@ public class SaveTheGame {
 
     public SaveTheGame(Player player) {
         this.player = player;
+    }
+
+    public void setSavedGameList(List<String> savedGameList) {
+        SaveTheGame.savedGameList = savedGameList;
     }
 
     public void displaySaveWindow() {
@@ -65,6 +76,12 @@ public class SaveTheGame {
         window.centerOnScreen();
         window.setWidth(852);
         window.setHeight(413);
+
+        //mjoe: combobox added
+        ComboBox<String> saves = savedGamesListBox();
+        saves.getItems().add("sample save 1");
+        //saves.getItems().addAll(savedGameList);
+
         name.setPrefWidth(100);
         name.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
         "    -fx-border-radius: 5;" +
@@ -83,12 +100,7 @@ public class SaveTheGame {
             return c;
         };
 
-
         name.setTextFormatter(new TextFormatter(rejectChange));
-
-
-
-
 
         Button saveButton = new Button("SAVE");
         saveButton.setOnAction(e -> onKeyPressed());
@@ -118,7 +130,7 @@ public class SaveTheGame {
         HBox hbox = new HBox(saveButton, cancelButton);
         hbox.setSpacing(10);
        // hbox.setPadding(new Insets(15,12,15,12));
-        input.getChildren().addAll(name, hbox);
+        input.getChildren().addAll(saves, name, hbox);
 
         VBox layout = new VBox();
         layout.setBackground(new Background(backgroundImage));
@@ -152,14 +164,17 @@ public class SaveTheGame {
 
     private boolean alreadyExistInDb() {
         setupDbManager();
-        boolean isExist = true; //TODO change from true to false after implemented
-        //TODO check if already exist the given name in db - végigiterálunk listán és átállítom falseról truera ha van találat
+        boolean isExist = false; //
+        // check if already exist the given name in db - végigiterálunk listán és átállítom falseról truera ha van találat
 
         List<PlayerModel> list = dbManager.getAll();
-
-        PlayerModel playerModel = new PlayerModel(player);
         String saveName = name.getText();
 
+        for (PlayerModel savedmodel: list) {
+            if (saveName.equals(savedmodel.getSavedName())) {
+                isExist = true;
+            }
+        }
 
 
         return isExist;
@@ -188,7 +203,7 @@ public class SaveTheGame {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
             // ... user chose "Yes"
-            dbManager.update(player); //TODO implement update method in PlayerDaoJDBC
+            dbManager.update(player);
             alert.close();
             window.close();
 
@@ -200,13 +215,23 @@ public class SaveTheGame {
     }
 
     private void setupDbManager(){
-//TODO onKeyPressed event and setup db implement correctly
+
         dbManager = new GameDatabaseManager();
         try {
             dbManager.setup();
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }
+    }
+
+    private ComboBox<String> savedGamesListBox() {
+        ComboBox<String> saves = new ComboBox<>();
+        saves.setEditable(false);
+        saves.setBackground(null);
+        saves.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
+                "    -fx-border-radius: 5;" +
+                "    -fx-padding: 6 6 6 6; -fx-text-fill: #ffdb00");
+        return saves;
     }
 
 

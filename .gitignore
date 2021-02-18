@@ -83,3 +83,4 @@ buildNumber.properties
 .idea/workspace.xml
 *.xml
 src/main/java/com/codecool/dungeoncrawl/dao/PersonalData.java
+dungeon-crawl.iml
