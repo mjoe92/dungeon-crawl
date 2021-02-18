@@ -4,6 +4,7 @@ import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.codecool.dungeoncrawl.dao.PlayerDao;
 
@@ -41,9 +42,11 @@ public class Load {
 
     GameDatabaseManager dbManager;
     Player player;
+    GameMap map;
 
     public Load(GameMap map) {
         this.player = map.getPlayer();
+        this.map = map;
     }
 
     public void setSavedGameList(List<String> savedGameList) {
@@ -158,7 +161,7 @@ public class Load {
 
         dbManager = new GameDatabaseManager();
         try {
-            dbManager.setup();
+            dbManager.setup(map);
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }

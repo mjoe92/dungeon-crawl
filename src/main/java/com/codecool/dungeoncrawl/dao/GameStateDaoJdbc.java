@@ -24,7 +24,7 @@ public class GameStateDaoJdbc implements GameStateDao {
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, state.getCurrentMap());
             statement.setDate(2, state.getSavedAt());
-            statement.setString(3, state.getPlayer().getPlayerName());
+            statement.setInt(3, state.getPlayer().getId());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();

@@ -6,6 +6,7 @@ import com.codecool.dungeoncrawl.logic.actors.Actor;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 public class GameState extends BaseModel implements Serializable {
@@ -22,8 +23,15 @@ public class GameState extends BaseModel implements Serializable {
 
     }
 
-    public GameState(String currentMap, GameMap map) {
-        this.currentMap = currentMap;
+    public GameState(GameMap map, PlayerModel playerModel) {        //ezt kell használnunk hogy megkapja az aktuális id-t
+        this.currentMap = map.getPlayer().getCurrentMap();
+        this.player = playerModel;
+        this.monsters = new ArrayList<>(map.getMonsters()) ;
+        this.savedAt = new Date(System.currentTimeMillis());
+    }
+
+    public GameState(GameMap map) {
+        this.currentMap = map.getPlayer().getCurrentMap();
         this.player = new PlayerModel(map.getPlayer());
         this.monsters = new ArrayList<>(map.getMonsters()) ;
     }
