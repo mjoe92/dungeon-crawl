@@ -1,9 +1,5 @@
 package com.codecool.dungeoncrawl.dao;
 
-import com.codecool.dungeoncrawl.logic.Cell;
-import com.codecool.dungeoncrawl.logic.CellType;
-import com.codecool.dungeoncrawl.logic.GameMap;
-import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import javax.sql.DataSource;
@@ -90,7 +86,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             int y = rs.getInt(5);
             int strength = rs.getInt(6);
             int speed = rs.getInt(7);
-            String gameName = rs.getString(8);
+            String savedName = rs.getString(8);
 
             //PlayerModel-t visszaadni, miután a Playert létrehoztuk
             //Ahhoz Cell kell <- GameMap
@@ -108,7 +104,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             player.setHealth(hp);
             player.setStrength(strength);
             player.setSpeed(speed);
-            player.setGameName(gameName);
+            player.setSavedName(savedName);
             return player;
         } catch (SQLException e) {
             throw new RuntimeException(e);

@@ -1,7 +1,6 @@
 package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.dao.GameStateDao;
-import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 
 import java.io.Serializable;
@@ -15,7 +14,7 @@ public class PlayerModel extends BaseModel implements Serializable {
     private int health;
     private int speed;
     private int strength;
-    private String gameName;
+    private String savedName;
 
     private GameStateDao gameStateDao;
 
@@ -80,12 +79,12 @@ public class PlayerModel extends BaseModel implements Serializable {
         this.strength = strength;
     }
 
-    public void setGameName(String gameName) {
-        this.gameName = gameName;
+    public void setSavedName(String savedName) {
+        this.savedName = savedName;
     }
 
-    public String getGameName() {
-        return gameName;
+    public String getSavedName() {
+        return savedName;
     }
 
     /*
