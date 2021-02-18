@@ -89,8 +89,9 @@ public class Load {
 
         //mjoe: combobox added
         ComboBox<String> saves = savedGamesListBox();
-        //saves.getItems().add("sample save 1");
-        saves.getItems().addAll(savedGameList);
+
+        saves.getItems().add("sample save 1");
+        //saves.getItems().addAll(savedGameList);
 
         saves.setPrefSize(100, 50);
 
