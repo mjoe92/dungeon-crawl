@@ -14,6 +14,7 @@ public class Player extends Actor {
     private int health;
     private int speed;
     private String savedName;
+    private String currentMap;
 
 
     public Player(Cell cell) {
@@ -84,5 +85,11 @@ public class Player extends Actor {
         return playerName;
     }
 
+    public String getCurrentMap() {
+        return currentMap;
+    }
 
+    public void setCurrentMap(String currentMap) {
+        this.currentMap = currentMap;
+    }
 }

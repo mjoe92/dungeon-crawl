@@ -31,6 +31,11 @@ public class PlayerDaoJdbc implements PlayerDao {
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             playerModel.setId(resultSet.getInt(1));
+            System.out.println("PlayerDaoJdBC add method started, fields added: " + playerModel.getPlayerName() + " "
+            + playerModel.getX()
+            + playerModel.getY()
+            + playerModel.getStrength()
+            + playerModel.getSpeed());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

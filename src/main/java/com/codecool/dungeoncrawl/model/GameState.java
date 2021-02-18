@@ -22,8 +22,8 @@ public class GameState extends BaseModel implements Serializable {
 
     }
 
-    public GameState(String currentMap, GameMap map) {
-        this.currentMap = currentMap;
+    public GameState(GameMap map) {
+        this.currentMap = map.getPlayer().getCurrentMap();
         this.player = new PlayerModel(map.getPlayer());
         this.monsters = new ArrayList<>(map.getMonsters()) ;
     }

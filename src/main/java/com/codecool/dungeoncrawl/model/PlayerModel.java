@@ -115,6 +115,7 @@ public class PlayerModel extends BaseModel implements Serializable {
     }
 
 
+
     /*
     public Player getPlayer() {
         return player;

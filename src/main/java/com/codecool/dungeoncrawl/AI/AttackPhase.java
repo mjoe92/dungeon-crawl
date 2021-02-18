@@ -93,8 +93,8 @@ public class AttackPhase {
         }
 
 
-        System.out.println("  monsterdies ended");
-        System.out.println("----------------------");
+    //    System.out.println("  monsterdies ended");
+     //   System.out.println("----------------------");
 
         monster.setHealth(0);
     }

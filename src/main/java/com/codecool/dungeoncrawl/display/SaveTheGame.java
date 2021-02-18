@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.codecool.dungeoncrawl.dao.PlayerDao;
@@ -41,9 +42,11 @@ public class SaveTheGame {
 
     GameDatabaseManager dbManager;
     Player player;
+    GameMap map;
 
-    public SaveTheGame(Player player) {
-        this.player = player;
+    public SaveTheGame(GameMap map) {
+        this.player = map.getPlayer();
+        this.map = map;
     }
 
     public void setSavedGameList(List<String> savedGameList) {
@@ -159,7 +162,7 @@ public class SaveTheGame {
             showDialogBox();
         } else {
              player.setSavedName(name.getText());
-             dbManager.savePlayer(player);
+             dbManager.savePlayer();
              window.close();
          }
     }
@@ -173,11 +176,14 @@ public class SaveTheGame {
         String saveName = name.getText();
 
         for (PlayerModel savedmodel: list) {
+            System.out.println("alreadyExist method in SaveTheGame class started, name to search: " + saveName);
+            System.out.println("List<PlayerModel> list = dbManager.getAll() elements .getSavedName:" + savedmodel.getSavedName());
             if (saveName.equals(savedmodel.getSavedName())) {
+                System.out.println("Enter if statement ");
                 isExist = true;
+                System.out.println("isExist: " + isExist);
             }
         }
-
 
         return isExist;
     }
@@ -205,7 +211,7 @@ public class SaveTheGame {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
             // ... user chose "Yes"
-            dbManager.update(player);
+            dbManager.update();
             alert.close();
             window.close();
 
@@ -220,7 +226,7 @@ public class SaveTheGame {
 
         dbManager = new GameDatabaseManager();
         try {
-            dbManager.setup();
+            dbManager.setup(map);
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }

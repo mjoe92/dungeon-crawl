@@ -82,7 +82,7 @@ public class Main extends Application {
     Label monsterstrengthLabel = new Label();
     GameDatabaseManager dbManager;
     MenuBar menuBar = new MenuBar();
-    SaveTheGame saveTheGame = new SaveTheGame(map.getPlayer());
+    SaveTheGame saveTheGame = new SaveTheGame(map);
     Load load = new Load(map);
 
     static Stage window;
@@ -93,6 +93,8 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        map.getPlayer().setCurrentMap("map.txt");
         setupDbManager();
 
         window = primaryStage;
@@ -291,6 +293,7 @@ public class Main extends Application {
             playerInventory = map.getPlayer().getInventory();   //a kirajzoláshoz új maphez be kell állítani az új inventoryt
             map.getPlayer().setStrength(playerStrengthcopy);
             map.getPlayer().setHealth(playerHealthCopy);
+            map.getPlayer().setCurrentMap("map2.txt");
 
         }
 
@@ -329,7 +332,7 @@ public class Main extends Application {
     private void setupDbManager() {
         dbManager = new GameDatabaseManager();
         try {
-            dbManager.setup();
+            dbManager.setup(map);
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }
@@ -368,12 +371,12 @@ public class Main extends Application {
 
     private void drawAttackedMonstersProperties() {
 
-        System.out.println("drawAttackedMonstersProperties started");
+  //      System.out.println("drawAttackedMonstersProperties started");
         boolean isAttack = true;
         for (Actor monster : map.getMonsters()) {
-            System.out.println("foreach started actual monster: " + monster.getTileName() + " under attack: " + monster.isUnderAttack());
+       //     System.out.println("foreach started actual monster: " + monster.getTileName() + " under attack: " + monster.isUnderAttack());
             if (monster.isUnderAttack()) {
-                System.out.println("attackedmonster found set label");
+           //     System.out.println("attackedmonster found set label");
                 monsterType.setText("" + monster.getTileName());
                 monsterHealthLabel.setText("" + monster.getHealth());
                 monsterstrengthLabel.setText("" + monster.getStrength());
@@ -381,7 +384,7 @@ public class Main extends Application {
             }
         }
         if (isAttack) {
-            System.out.println("no attacked monster found");
+    //        System.out.println("no attacked monster found");
             monsterType.setText("");
             monsterHealthLabel.setText("");
             monsterstrengthLabel.setText("");

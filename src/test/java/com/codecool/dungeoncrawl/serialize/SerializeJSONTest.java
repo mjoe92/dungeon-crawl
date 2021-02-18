@@ -23,7 +23,7 @@ public class SerializeJSONTest {
 
 
         GameMap map = MapLoader.loadMap(mapName);
-        GameState gameState = new GameState(mapName,map);
+        GameState gameState = new GameState(map);
         inventory.add(new Key(map.getCell(1,1)));
         inventory.add(new Sword(map.getCell(10,1)));
         map.getPlayer().setHealth(10);
@@ -47,7 +47,7 @@ public class SerializeJSONTest {
 
 
         GameMap map = MapLoader.loadMap(mapName);
-        GameState gameState = new GameState(mapName,map);
+        GameState gameState = new GameState(map);
         inventory.add(new Key(map.getCell(1,1)));
         map.getPlayer().setHealth(10);
         map.getPlayer().setStrength(5);
