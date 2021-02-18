@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.codecool.dungeoncrawl.dao.PlayerDao;
@@ -41,8 +42,8 @@ public class Load {
     GameDatabaseManager dbManager;
     Player player;
 
-    public Load(Player player) {
-        this.player = player;
+    public Load(GameMap map) {
+        this.player = map.getPlayer();
     }
 
     public void setSavedGameList(List<String> savedGameList) {
@@ -85,8 +86,8 @@ public class Load {
 
         //mjoe: combobox added
         ComboBox<String> saves = savedGamesListBox();
-        saves.getItems().add("sample save 1");
-        //saves.getItems().addAll(savedGameList);
+        //saves.getItems().add("sample save 1");
+        saves.getItems().addAll(savedGameList);
 
         saves.setPrefSize(100, 50);
 
