@@ -21,8 +21,8 @@ public class PlayerDaoJdbc implements PlayerDao {
     @Override
     public void add(PlayerModel playerModel) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "INSERT INTO player (player_name, hp, x, y, strength, speed) " +
-                    "VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO player (player_name, hp, x, y, strength, speed, game_name) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerModel.getPlayerName());
             statement.setInt(2, playerModel.getHealth());
@@ -73,7 +73,8 @@ public class PlayerDaoJdbc implements PlayerDao {
                     "x, " +
                     "y, " +
                     "strength, " +
-                    "speed " +
+                    "speed, " +
+                    "game_name " +
                     "FROM player " +
                     "WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
@@ -89,6 +90,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             int y = rs.getInt(5);
             int strength = rs.getInt(6);
             int speed = rs.getInt(7);
+            String gameName = rs.getString(8);
 
             //PlayerModel-t visszaadni, miután a Playert létrehoztuk
             //Ahhoz Cell kell <- GameMap
@@ -106,6 +108,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             player.setHealth(hp);
             player.setStrength(strength);
             player.setSpeed(speed);
+            player.setGameName(gameName);
             return player;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -121,7 +124,8 @@ public class PlayerDaoJdbc implements PlayerDao {
                     "x, " +
                     "y, " +
                     "strength, " +
-                    "speed " +
+                    "speed, " +
+                    "game_name " +
                     "FROM player";
             ResultSet rs = conn.createStatement().executeQuery(sql);
 

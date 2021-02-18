@@ -15,6 +15,7 @@ public class PlayerModel extends BaseModel implements Serializable {
     private int health;
     private int speed;
     private int strength;
+    private String gameName;
 
     private GameStateDao gameStateDao;
 
@@ -77,6 +78,14 @@ public class PlayerModel extends BaseModel implements Serializable {
 
     public void setStrength(int strength) {
         this.strength = strength;
+    }
+
+    public void setGameName(String gameName) {
+        this.gameName = gameName;
+    }
+
+    public String getGameName() {
+        return gameName;
     }
 
     /*
