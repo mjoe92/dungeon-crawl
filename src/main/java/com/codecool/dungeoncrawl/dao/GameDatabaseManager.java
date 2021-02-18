@@ -45,9 +45,11 @@ public class GameDatabaseManager {
         dataSource.setUser(user);
         dataSource.setPassword(password);
 
+        /* TEST
         System.out.println("Trying to connect");
         dataSource.getConnection().close();
         System.out.println("Connection ok.");
+*/
 
         return dataSource;
     }
