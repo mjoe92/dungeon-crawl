@@ -27,7 +27,7 @@ public class GameDatabaseManager {
         gameStateDao = new GameStateDaoJdbc(dataSource);
         this.model = new PlayerModel(map.getPlayer());
      //   this.gameState = new GameState(map, model);
-    }
+    } 
 
     public void savePlayer() {
 
