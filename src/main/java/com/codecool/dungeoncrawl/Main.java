@@ -83,7 +83,7 @@ public class Main extends Application {
     GameDatabaseManager dbManager;
     MenuBar menuBar = new MenuBar();
     SaveTheGame saveTheGame = new SaveTheGame(map.getPlayer());
-    Load load = new Load(map.getPlayer());
+    Load load = new Load(map);
 
     static Stage window;
 

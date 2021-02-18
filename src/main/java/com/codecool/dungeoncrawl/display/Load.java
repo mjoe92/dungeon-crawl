@@ -150,7 +150,7 @@ public class Load {
          * selectable list. Choosing an element loads the selected game state with the proper map, position and inventory*/
         setupDbManager();
 
-        //TODO implement keyevents for Load button:
+        //TODO implement keyevents for Load button: get the datas and load the game: load map, change player fields
     }
 
 

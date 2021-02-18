@@ -158,6 +158,7 @@ public class SaveTheGame {
          if (alreadyExistInDb()) {
             showDialogBox();
         } else {
+             player.setSavedName(name.getText());
              dbManager.savePlayer(player);
              window.close();
          }
