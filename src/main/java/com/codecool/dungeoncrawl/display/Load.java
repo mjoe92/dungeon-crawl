@@ -26,6 +26,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
@@ -33,25 +34,29 @@ import java.util.stream.Collectors;
 
 import com.codecool.dungeoncrawl.display.Settings;
 
-public class SaveTheGame {
+public class Load {
     private static Stage window;
     private static List<String> savedGameList;
-    //TODO Settings/getPlayerName-t lehetne megadni alapértelmezettnek de nem látja innen
-    final TextField name = new TextField("Name");
 
     GameDatabaseManager dbManager;
     Player player;
 
-    public SaveTheGame(Player player) {
+    public Load(Player player) {
         this.player = player;
     }
 
     public void setSavedGameList(List<String> savedGameList) {
+        setupDbManager();
+        List<PlayerModel> list = dbManager.getAll();
+        List<String> savedNames = new ArrayList<>();
+        for (PlayerModel savedPM : list) {
+            savedGameList.add(savedPM.getSavedName());
+        }
 
-        SaveTheGame.savedGameList = savedGameList;
+        this.savedGameList = savedNames;
     }
 
-    public void displaySaveWindow() {
+    public void displayLoadWindow() {
 
         window = new Stage();
         window.setResizable(false);
@@ -63,7 +68,7 @@ public class SaveTheGame {
                 BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 
         BackgroundImage buttonBackgroundImage = new BackgroundImage(
-                new Image( getClass()
+                new Image(getClass()
                         .getResource("/menubuttonbackground.jpg")
                         .toExternalForm()),
                 BackgroundRepeat.NO_REPEAT,
@@ -73,45 +78,33 @@ public class SaveTheGame {
         Background background = new Background(buttonBackgroundImage);
 
         window.initModality(Modality.APPLICATION_MODAL);
-        window.setTitle("Save");
+        window.setTitle("Load");
         window.centerOnScreen();
         window.setWidth(852);
         window.setHeight(413);
 
         //mjoe: combobox added
-       /* ComboBox<String> saves = savedGamesListBox();
-        saves.getItems().add("sample save 1");*/
+        ComboBox<String> saves = savedGamesListBox();
+        saves.getItems().add("sample save 1");
         //saves.getItems().addAll(savedGameList);
 
-        name.setPrefWidth(100);
-        name.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
-        "    -fx-border-radius: 5;" +
+        saves.setPrefSize(100, 50);
+
+        saves.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
+                "    -fx-border-radius: 5;" +
                 "    -fx-padding: 6 6 6 6; -fx-text-fill: #ffdb00");
 
-        name.setBackground(null);
+        saves.setBackground(null);
 
-
-        final int MAX_LENGTH = 20;
-        UnaryOperator<TextFormatter.Change> rejectChange = c -> {
-            if (c.isContentChange()) {
-                if (c.getControlNewText().length() > MAX_LENGTH) {
-                    return null;
-                }
-            }
-            return c;
-        };
-
-        name.setTextFormatter(new TextFormatter(rejectChange));
-
-        Button saveButton = new Button("SAVE");
-        saveButton.setOnAction(e -> onKeyPressed());
-        saveButton.setAlignment(Pos.BOTTOM_CENTER);
-        saveButton.setBackground(background);
-        saveButton.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
+        Button loadButton = new Button("LOAD");
+        loadButton.setOnAction(e -> onKeyPressed());
+        loadButton.setAlignment(Pos.BOTTOM_CENTER);
+        loadButton.setBackground(background);
+        loadButton.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
                 "    -fx-border-radius: 5;" +
                 "    -fx-padding: 3 6 6 6; -fx-text-fill: #ffdb00");
-        saveButton.setPrefSize(200, 50);
-      //  saveButton.setMaxHeight(50);
+        loadButton.setPrefSize(200, 50);
+        //  saveButton.setMaxHeight(50);
 
         Button cancelButton = new Button("CANCEL");
         cancelButton.setCancelButton(true);
@@ -128,16 +121,16 @@ public class SaveTheGame {
         input.setMaxWidth(300);
         input.setSpacing(20);
         input.setAlignment(Pos.CENTER);
-        HBox hbox = new HBox(saveButton, cancelButton);
+        HBox hbox = new HBox(loadButton, cancelButton);
         hbox.setSpacing(10);
-       // hbox.setPadding(new Insets(15,12,15,12));
-        input.getChildren().addAll(name, hbox);
+        // hbox.setPadding(new Insets(15,12,15,12));
+        input.getChildren().addAll(saves, hbox);
 
         VBox layout = new VBox();
         layout.setBackground(new Background(backgroundImage));
         layout.getChildren().add(input);
         layout.setAlignment(Pos.BOTTOM_CENTER);
-        layout.setPadding(new Insets(0,0,100,0));
+        layout.setPadding(new Insets(0, 0, 100, 0));
 
         FadeTransition ft2 = new FadeTransition(Duration.millis(1000), layout);
         ft2.setFromValue(0.0);
@@ -152,70 +145,15 @@ public class SaveTheGame {
     }
 
     private void onKeyPressed() {
-
+        /**There is a Load menu which brings up a modal window, showing the previously saved states with their names as a
+         * selectable list. Choosing an element loads the selected game state with the proper map, position and inventory*/
         setupDbManager();
 
-         if (alreadyExistInDb()) {
-            showDialogBox();
-        } else {
-             dbManager.savePlayer(player);
-             window.close();
-         }
+        //TODO implement keyevents for Load button:
     }
 
-    private boolean alreadyExistInDb() {
-        setupDbManager();
-        boolean isExist = false; //
-        // check if already exist the given name in db - végigiterálunk listán és átállítom falseról truera ha van találat
 
-        List<PlayerModel> list = dbManager.getAll();
-        String saveName = name.getText();
-
-        for (PlayerModel savedmodel: list) {
-            if (saveName.equals(savedmodel.getSavedName())) {
-                isExist = true;
-            }
-        }
-
-
-        return isExist;
-    }
-
-    private void showDialogBox() {
-        //show dialog box with question: Would you like to overwrite the already existing state? YES / NO
-        /**If the given username already exist in the db the system shows a dialogbox with a question: Would you like to overwrite the already existing state?
-         Choosing Yes: the already existing state is updated and all modal window closes
-         Choosing No: the dialog closes and the name input field content on the saving dialog is selected again*/
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("This name is already exists!");
-        alert.setHeaderText("Would you like to overwrite the already existing state?");
-        alert.setContentText("YES: the already exist state will be updated."
-                + System.lineSeparator()
-                + "NO: you can choose another name for save.");
-
-
-        ButtonType buttonTypeYes = new ButtonType("Yes");
-        ButtonType buttonTypeNo = new ButtonType("No");
-
-
-        alert.getButtonTypes().setAll(buttonTypeYes, buttonTypeNo);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == buttonTypeYes){
-            // ... user chose "Yes"
-            dbManager.update(player);
-            alert.close();
-            window.close();
-
-        } else if (result.get() == buttonTypeNo) {
-            // ... user chose "No": close dialog
-        alert.close();
-        name.requestFocus();
-        }
-    }
-
-    private void setupDbManager(){
+    private void setupDbManager() {
 
         dbManager = new GameDatabaseManager();
         try {
@@ -225,7 +163,7 @@ public class SaveTheGame {
         }
     }
 
-   /* private ComboBox<String> savedGamesListBox() {
+    private ComboBox<String> savedGamesListBox() {
         ComboBox<String> saves = new ComboBox<>();
         saves.setEditable(false);
         saves.setBackground(null);
@@ -233,7 +171,7 @@ public class SaveTheGame {
                 "    -fx-border-radius: 5;" +
                 "    -fx-padding: 6 6 6 6; -fx-text-fill: #ffdb00");
         return saves;
-    }*/
+    }
 
 
 }

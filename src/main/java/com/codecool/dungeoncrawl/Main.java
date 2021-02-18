@@ -1,6 +1,7 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
+import com.codecool.dungeoncrawl.display.Load;
 import com.codecool.dungeoncrawl.display.SaveTheGame;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
@@ -82,6 +83,7 @@ public class Main extends Application {
     GameDatabaseManager dbManager;
     MenuBar menuBar = new MenuBar();
     SaveTheGame saveTheGame = new SaveTheGame(map.getPlayer());
+    Load load = new Load(map.getPlayer());
 
     static Stage window;
 
@@ -112,6 +114,7 @@ public class Main extends Application {
 
         //Menuelem event TODO load, export, import event
         saveMenuItem.setOnAction(e -> saveTheGame.displaySaveWindow());
+        loadMenuItem.setOnAction(e -> load.displayLoadWindow());
       /*  menuBar.setStyle("-fx-background-color: #472D3C;");
         menu.setStyle("-fx-font-size: 1em; -fx-background-color:#472D3C; -fx-text-fill: #CFC6B8; -fx-border-radius: 5; -fx-padding: 6 12 12 12; -fx-border-color: #F4B41B; -fx-my-menu-color: #F4B41B;" +
                 "-fx-my-menu-color-highlighted: #CFC6B8;");*/

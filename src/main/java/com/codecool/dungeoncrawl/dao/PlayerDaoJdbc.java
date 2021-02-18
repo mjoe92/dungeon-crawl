@@ -26,6 +26,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             statement.setInt(4, playerModel.getY());
             statement.setInt(5, playerModel.getStrength());
             statement.setInt(6, playerModel.getSpeed());
+            statement.setString(7, playerModel.getSavedName());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
