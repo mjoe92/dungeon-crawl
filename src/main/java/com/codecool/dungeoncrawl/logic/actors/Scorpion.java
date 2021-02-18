@@ -4,9 +4,9 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Scorpion extends Actor {
 
-    private int health = 13;
-    private int speed = 1;
-    private int strength = 1;
+    private int shealth = 13;
+    private int sspeed = 1;
+    private int sstrength = 1;
 
     public Scorpion(Cell cell) {
         super(cell);
@@ -19,31 +19,31 @@ public class Scorpion extends Actor {
 
     @Override
     public int getHealth() {
-        return health;
+        return shealth;
     }
 
 
     @Override
     public int getSpeed() {
-        return speed;
+        return sspeed;
     }
 
     @Override
     public int getStrength() {
-        return strength;
+        return sstrength;
     }
 
     @Override
     public void setHealth(int health) {
-        this.health = health;
+        this.shealth = health;
     }
 
     @Override
     public void setSpeed(int speed) {
-        this.speed = speed;
+        this.sspeed = speed;
     }
 
     public void setStrength(int strength) {
-        this.strength = strength;
+        this.sstrength = strength;
     }
 }

@@ -33,7 +33,7 @@ public class PlayerModel extends BaseModel implements Serializable {
         this.playerName = player.getName();
         this.x = player.getCell().getX();
         this.y = player.getCell().getY();
-        this.inventory = player.getInventory();
+        this.inventory = new ArrayList<>(player.getInventory());
         this.canPassWall = player.isCanPassWall();
         this.health = player.getHealth();
         this.speed = player.getSpeed();
