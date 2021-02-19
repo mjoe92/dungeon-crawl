@@ -473,7 +473,7 @@ public class Main extends Application {
         for (Actor mon:map.getMonsters()) {
 
             mon.setCell(map.getCell(mon.getX(),mon.getY()));
-           // map.putMonster(mon);
+            map.getCell(mon.getX(),mon.getY()).setActor(mon);
 
         }
 
@@ -482,8 +482,13 @@ public class Main extends Application {
         player.setPlayerName(playerModelToLoad.getPlayerName());
         player.setCurrentMap(currentmap);
         player.setInventory(new ArrayList<>(playerModelToLoad.getInventory()));
-        player.setCell(map.getCell(playerModelToLoad.getX(), playerModelToLoad.getY())); //ezzel teszem be helyére
-        map.setPlayer(player);
+
+        Cell cell = map.getCell(player.getX(), player.getY());
+        Cell nextCell = map.getCell(playerModelToLoad.getX(), playerModelToLoad.getY());
+        cell.setActor(null);
+        nextCell.setActor(player);
+        player.setCell(nextCell);
+
         player.setHealth(playerModelToLoad.getHealth());
         player.setStrength(playerModelToLoad.getStrength());
         player.setSpeed(playerModelToLoad.getSpeed());
