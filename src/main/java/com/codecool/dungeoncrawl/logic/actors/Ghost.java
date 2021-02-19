@@ -10,12 +10,33 @@ public class Ghost extends Actor {
 
     private static boolean canPassWall = true;
     private static boolean canPassEmpty = true;
+    private int x;
+    private int y;
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
 
     public Ghost() {
     }
 
     public Ghost(Cell cell) {
         super(cell);
+        this.x = cell.getX();
+        this.y = cell.getY();
     }
 
     @Override
