@@ -1,13 +1,15 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.display.Load;
-import com.codecool.dungeoncrawl.display.SaveTheGame;
+import com.codecool.dungeoncrawl.display.*;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Items;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.serialize.DeserializeJSON;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -33,7 +35,6 @@ import java.util.*;
 
 import com.codecool.dungeoncrawl.AI.AttackMovement;
 import com.codecool.dungeoncrawl.AI.RandomMovement;
-import com.codecool.dungeoncrawl.display.Settings;
 import com.codecool.dungeoncrawl.logic.*;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -87,7 +88,7 @@ public class Main extends Application {
     GameDatabaseManager dbManager;
     MenuBar menuBar = new MenuBar();
     SaveTheGame saveTheGame = new SaveTheGame(map);
-    Load load = new Load(map);
+    String path;
 
     static Stage window;
 
@@ -100,6 +101,7 @@ public class Main extends Application {
 
         map.getPlayer().setCurrentMap("map.txt");
     //    setupDbManager();
+
 
         window = primaryStage;
         window.initStyle(StageStyle.UTILITY);
@@ -119,11 +121,16 @@ public class Main extends Application {
         menuBar.getMenus().add(menu);
 
         //Menuelem event TODO load, export, import event
+        Load load = new Load(map);
+        Import importGame = new Import(map);
+        Export exportGame;
+
+
         saveMenuItem.setOnAction(e -> saveTheGame.displaySaveWindow());
         loadMenuItem.setOnAction(e -> load.displayLoadWindow());
 
-
-        exportMenuItem.setOnAction(e -> createSaveDialog());
+        exportGame = new Export(map);
+        exportMenuItem.setOnAction(e -> exportGame.createSaveDialog());
         importMenuItem.setOnAction(e -> createLoadDialog());
       /*  menuBar.setStyle("-fx-background-color: #472D3C;");
         menu.setStyle("-fx-font-size: 1em; -fx-background-color:#472D3C; -fx-text-fill: #CFC6B8; -fx-border-radius: 5; -fx-padding: 6 12 12 12; -fx-border-color: #F4B41B; -fx-my-menu-color: #F4B41B;" +
@@ -267,14 +274,14 @@ public class Main extends Application {
         if (map.getPlayer().isCanMove()) {
             for (Actor monster : map.getMonsters()) {
 
-                if (monster.getHealth() == 0) {
+              /*  if (monster.getHealth() == 0) {
                     // System.out.println("Monster to remove:" + monster);
                     //System.out.println("Monsters before remove:" + map.getMonsters().toString());
 
                     map.removeMonster(monster);
 
                     //   System.out.println("Monsters after removed:" + map.getMonsters().toString());
-                }
+                }*/
 
                 if (monster.getHealth() > 0) {
                     RandomMovement monsterMove = new RandomMovement();
@@ -423,37 +430,72 @@ public class Main extends Application {
         }
     }
 
-    public static void createSaveDialog() {
+    public static String createSaveDialog() {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
         fc.setInitialFileName("export.txt");
         File f = fc.showSaveDialog(window);
         if (f != null) {
-            saveTextToFile("Ez itt a JSON adatok helye\nEz itt a JSON adatok helye", f);
+            //saveTextToFile("Ez itt a JSON adatok helye\nEz itt a JSON adatok helye", f);
+            System.out.println("Path to save: " + f.getAbsolutePath());
+            return f.getAbsolutePath();
         }
+        return null;
     }
 
-    public static String createLoadDialog() {
+    public void createLoadDialog() {
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
         fc.setInitialFileName("export.txt");
         File f = fc.showOpenDialog(window);
 
-        StringBuilder sb = new StringBuilder();
-
         if (f != null) {
-            try {
-                Scanner fileReader = new Scanner(f);
+            System.out.println("Path to load: " + f.getAbsolutePath());
 
-                while (fileReader.hasNextLine()) {
-                    sb.append(fileReader.nextLine());
-                }
-                fileReader.close();
-            } catch (IOException e) {
-                return "";
-            }
+            path = f.getAbsolutePath();
         }
-        //System.out.println(sb.toString());
-        return sb.toString();
+
+        loadGame();
     }
+
+    private void loadGame() {
+
+        GameState gameStateToLoad = DeserializeJSON.importGameState(path);
+        PlayerModel playerModelToLoad = gameStateToLoad.getPlayer();
+
+        String currentmap = gameStateToLoad.getCurrentMap();
+        map = MapLoader.loadMap(currentmap);
+
+        Player player = map.getPlayer();
+
+        map.setMonsters(new ArrayList<>(gameStateToLoad.getMonsters()));
+
+        for (Actor mon:map.getMonsters()) {
+
+            mon.setCell(map.getCell(mon.getX(),mon.getY()));
+            map.getCell(mon.getX(),mon.getY()).setActor(mon);
+
+        }
+
+
+
+        player.setPlayerName(playerModelToLoad.getPlayerName());
+        player.setCurrentMap(currentmap);
+        player.setInventory(new ArrayList<>(playerModelToLoad.getInventory()));
+
+        Cell cell = map.getCell(player.getX(), player.getY());
+        Cell nextCell = map.getCell(playerModelToLoad.getX(), playerModelToLoad.getY());
+        cell.setActor(null);
+        nextCell.setActor(player);
+        player.setCell(nextCell);
+
+        player.setHealth(playerModelToLoad.getHealth());
+        player.setStrength(playerModelToLoad.getStrength());
+        player.setSpeed(playerModelToLoad.getSpeed());
+        player.setCanPassWall(playerModelToLoad.isCanPassWall());
+
+        refresh();
+
+    }
+
 }
