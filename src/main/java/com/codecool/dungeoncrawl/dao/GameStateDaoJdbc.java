@@ -14,6 +14,7 @@ public class GameStateDaoJdbc implements GameStateDao {
 
     public GameStateDaoJdbc(DataSource dataSource) {
         this.dataSource = dataSource;
+        this.playerDao = new PlayerDaoJdbc(dataSource);
     }
 
     @Override
@@ -73,13 +74,13 @@ public class GameStateDaoJdbc implements GameStateDao {
     @Override
     public GameState get(long id) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "SELECT id, " +
-                    "current_map, " +
+            String sql = "SELECT current_map, " +
                     "saved_at, " +
                     "player_id " +
+                    "FROM game_state " +
                     "WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
-            st.setLong(1, id);
+            st.setInt(1, (int) id);
             ResultSet rs = st.executeQuery();
             if (!rs.next()) {
                 return null;

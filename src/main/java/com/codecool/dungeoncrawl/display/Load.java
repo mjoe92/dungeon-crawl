@@ -86,7 +86,6 @@ public class Load {
 
         //mjoe: combobox added
         ComboBox<String> saves = savedGamesListBox();
-        //saves.getItems().add("sample save 1");
         generateSavedGameList();
         saves.getItems().addAll(savedGameList);
         saves.setPrefSize(500, 50);
@@ -153,6 +152,7 @@ public class Load {
         long id = savedGameList.indexOf(box.getSelectionModel().getSelectedItem()) + 1;
         PlayerModel player = dbManager.getPM((int) id);
         GameState state = dbManager.getGS((int) id);
+        //reloadState();
     }
 
 
