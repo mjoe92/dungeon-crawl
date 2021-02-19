@@ -82,8 +82,8 @@ public class SaveTheGame {
         window.setHeight(413);
 
         //mjoe: combobox added
-       /* ComboBox<String> saves = savedGamesListBox();
-        saves.getItems().add("sample save 1");*/
+        //ComboBox<String> saves = savedGamesListBox();
+        //saves.getItems().add("sample save 1");
         //saves.getItems().addAll(savedGameList);
 
         name.setPrefWidth(100);
@@ -161,7 +161,6 @@ public class SaveTheGame {
          if (alreadyExistInDb()) {
             showDialogBox();
         } else {
-
              dbManager.savePlayer();
              window.close();
          }
@@ -175,10 +174,10 @@ public class SaveTheGame {
         List<PlayerModel> list = dbManager.getAll();
         String saveName = name.getText();
 
-        for (PlayerModel savedmodel: list) {
+        for (PlayerModel savedModel: list) {
             System.out.println("alreadyExist method in SaveTheGame class started, name to search: " + saveName);
-            System.out.println("List<PlayerModel> list = dbManager.getAll() elements .getSavedName:" + savedmodel.getSavedName());
-            if (saveName.equals(savedmodel.getSavedName())) {
+            System.out.println("List<PlayerModel> list = dbManager.getAll() elements .getSavedName:" + savedModel.getSavedName());
+            if (saveName.equals(savedModel.getSavedName())) {
                 System.out.println("Enter if statement ");
                 isExist = true;
                 System.out.println("isExist: " + isExist);
