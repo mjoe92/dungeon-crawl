@@ -497,7 +497,7 @@ public class Main extends Application {
         refresh();
 
     }
-    
+
     public static void reloadState(GameState state) {
         map = MapLoader.loadMap(state.getCurrentMap());
     }
