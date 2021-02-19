@@ -99,7 +99,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        map.getPlayer().setCurrentMap("map.txt");
+        map.getPlayer().setCurrentMap("map01.txt");
     //    setupDbManager();
 
 
@@ -308,7 +308,7 @@ public class Main extends Application {
             playerInventory = map.getPlayer().getInventory();   //a kirajzoláshoz új maphez be kell állítani az új inventoryt
             map.getPlayer().setStrength(playerStrengthcopy);
             map.getPlayer().setHealth(playerHealthCopy);
-            map.getPlayer().setCurrentMap("map2.txt");
+            map.getPlayer().setCurrentMap("map02.txt");
 
         }
 
@@ -473,6 +473,7 @@ public class Main extends Application {
         for (Actor mon:map.getMonsters()) {
 
             mon.setCell(map.getCell(mon.getX(),mon.getY()));
+            map.getCell(mon.getX(),mon.getY()).setActor(mon);
            // map.putMonster(mon);
 
         }
@@ -482,8 +483,13 @@ public class Main extends Application {
         player.setPlayerName(playerModelToLoad.getPlayerName());
         player.setCurrentMap(currentmap);
         player.setInventory(new ArrayList<>(playerModelToLoad.getInventory()));
-        player.setCell(map.getCell(playerModelToLoad.getX(), playerModelToLoad.getY())); //ezzel teszem be helyére
-        map.setPlayer(player);
+
+        Cell cell = map.getCell(player.getX(), player.getY());
+        Cell nextCell = map.getCell(playerModelToLoad.getX(), playerModelToLoad.getY());
+        cell.setActor(null);
+        nextCell.setActor(player);
+        player.setCell(nextCell);
+
         player.setHealth(playerModelToLoad.getHealth());
         player.setStrength(playerModelToLoad.getStrength());
         player.setSpeed(playerModelToLoad.getSpeed());
