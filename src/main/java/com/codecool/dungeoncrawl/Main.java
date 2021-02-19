@@ -65,7 +65,7 @@ import java.util.stream.Collectors;
 import static com.codecool.dungeoncrawl.display.GameOver.displayLose;
 
 public class Main extends Application {
-    GameMap map = MapLoader.loadMap("map.txt"); //kezdő map
+    static GameMap map = MapLoader.loadMap("map.txt"); //kezdő map
     Canvas canvas = new Canvas(
             Tiles.TILE_WIDTH * 21,
             Tiles.TILE_WIDTH * 21);  // fix canvas méret. Egyelőre így sikerült megoldanom, hogy kulturáltan nézzen ki.
@@ -498,4 +498,7 @@ public class Main extends Application {
 
     }
 
+    public static void reloadState(GameState state) {
+        map = MapLoader.loadMap(state.getCurrentMap());
+    }
 }
