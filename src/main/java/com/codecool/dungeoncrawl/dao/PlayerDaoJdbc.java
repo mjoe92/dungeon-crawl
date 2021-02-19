@@ -15,6 +15,27 @@ public class PlayerDaoJdbc implements PlayerDao {
     }
 
     @Override
+    public void createPlayerTable() {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "CREATE TABLE IF NOT EXISTS player (\n" +
+                    "    id serial NOT NULL PRIMARY KEY,\n" +
+                    "    player_name text NOT NULL,\n" +
+                    "    hp integer NOT NULL,\n" +
+                    "    x integer NOT NULL,\n" +
+                    "    y integer NOT NULL,\n" +
+                    "    strength integer NOT NULL,\n" +
+                    "    speed integer NOT NULL,\n" +
+                    "    game_name text NOT NULL\n" +
+                    ");";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public void add(PlayerModel playerModel) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "INSERT INTO player (player_name, hp, x, y, strength, speed, game_name) " +
@@ -26,10 +47,16 @@ public class PlayerDaoJdbc implements PlayerDao {
             statement.setInt(4, playerModel.getY());
             statement.setInt(5, playerModel.getStrength());
             statement.setInt(6, playerModel.getSpeed());
+            statement.setString(7, playerModel.getSavedName());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
             playerModel.setId(resultSet.getInt(1));
+            System.out.println("PlayerDaoJdBC add method started, fields added: " + playerModel.getPlayerName() + " "
+            + playerModel.getX()
+            + playerModel.getY()
+            + playerModel.getStrength()
+            + playerModel.getSpeed());
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -88,17 +115,6 @@ public class PlayerDaoJdbc implements PlayerDao {
             int speed = rs.getInt(7);
             String savedName = rs.getString(8);
 
-            //PlayerModel-t visszaadni, miután a Playert létrehoztuk
-            //Ahhoz Cell kell <- GameMap
-/*
-            GameMap loadedMap = null;
-            Cell cell = new Cell(loadedMap, x, y, CellType.FLOOR);
-            Player hero = new Player(null); //cell a gameStateDao-ból lesz
-            hero.setPlayerName(name);
-            hero.setHealth(hp);
-            hero.setStrength(strength);
-            hero.setSpeed(speed);
-*/
             PlayerModel player = new PlayerModel(name, x, y);
             player.setId(playerId);
             player.setHealth(hp);
@@ -136,22 +152,12 @@ public class PlayerDaoJdbc implements PlayerDao {
                 int speed = rs.getInt(7);
                 String savedName = rs.getString(8);
 
-                //PlayerModel-t visszaadni, miután a Playert létrehoztuk
-                //Ahhoz Cell kell <- GameMap <- gameStateDao
-/*
-                GameMap currentMap = null;
-                Cell cell = new Cell(currentMap, x, y, CellType.FLOOR);
-                Player hero = new Player(cell); //cell a gameStateDao-ból lesz
-                hero.setPlayerName(playerName);
-                hero.setHealth(hp);
-                hero.setStrength(strength);
-                hero.setSpeed(speed);
-*/
                 PlayerModel player = new PlayerModel(playerName, x, y);
                 player.setId(playerId);
                 player.setHealth(hp);
                 player.setStrength(strength);
                 player.setSpeed(speed);
+                player.setSavedName(savedName);
                 result.add(player);
             }
             return result;

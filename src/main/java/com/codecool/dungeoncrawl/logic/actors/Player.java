@@ -1,6 +1,9 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
 import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.items.Items;
+
+import java.util.ArrayList;
 
 
 public class Player extends Actor {
@@ -10,12 +13,17 @@ public class Player extends Actor {
     private int strength = 5;
     private int health;
     private int speed;
+    private String savedName;
+    private String currentMap;
 
 
     public Player(Cell cell) {
         super(cell);
         this.health = 10;
         this.speed = 1;
+    }
+
+    public Player() {
     }
 
     public String getTileName() {       //csempe neve
@@ -68,5 +76,23 @@ public class Player extends Actor {
         return playerName;
     }
 
+    public String getSavedName() {
+        return savedName;
+    }
 
+    public void setSavedName(String savedName) {
+        this.savedName = savedName;
+    }
+
+    public String getPlayerName() {
+        return playerName;
+    }
+
+    public String getCurrentMap() {
+        return currentMap;
+    }
+
+    public void setCurrentMap(String currentMap) {
+        this.currentMap = currentMap;
+    }
 }

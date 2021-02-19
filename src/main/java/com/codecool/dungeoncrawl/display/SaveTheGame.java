@@ -2,6 +2,7 @@ package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
+import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 import com.codecool.dungeoncrawl.dao.PlayerDao;
@@ -41,12 +42,15 @@ public class SaveTheGame {
 
     GameDatabaseManager dbManager;
     Player player;
+    GameMap map;
 
-    public SaveTheGame(Player player) {
-        this.player = player;
+    public SaveTheGame(GameMap map) {
+        this.player = map.getPlayer();
+        this.map = map;
     }
 
     public void setSavedGameList(List<String> savedGameList) {
+
         SaveTheGame.savedGameList = savedGameList;
     }
 
@@ -78,8 +82,8 @@ public class SaveTheGame {
         window.setHeight(413);
 
         //mjoe: combobox added
-        ComboBox<String> saves = savedGamesListBox();
-        saves.getItems().add("sample save 1");
+        //ComboBox<String> saves = savedGamesListBox();
+        //saves.getItems().add("sample save 1");
         //saves.getItems().addAll(savedGameList);
 
         name.setPrefWidth(100);
@@ -130,7 +134,7 @@ public class SaveTheGame {
         HBox hbox = new HBox(saveButton, cancelButton);
         hbox.setSpacing(10);
        // hbox.setPadding(new Insets(15,12,15,12));
-        input.getChildren().addAll(saves, name, hbox);
+        input.getChildren().addAll(name, hbox);
 
         VBox layout = new VBox();
         layout.setBackground(new Background(backgroundImage));
@@ -151,13 +155,13 @@ public class SaveTheGame {
     }
 
     private void onKeyPressed() {
-
+        player.setSavedName(name.getText());
         setupDbManager();
 
          if (alreadyExistInDb()) {
             showDialogBox();
         } else {
-             dbManager.savePlayer(player);
+             dbManager.savePlayer();
              window.close();
          }
     }
@@ -170,12 +174,15 @@ public class SaveTheGame {
         List<PlayerModel> list = dbManager.getAll();
         String saveName = name.getText();
 
-        for (PlayerModel savedmodel: list) {
-            if (saveName.equals(savedmodel.getSavedName())) {
+        for (PlayerModel savedModel: list) {
+            System.out.println("alreadyExist method in SaveTheGame class started, name to search: " + saveName);
+            System.out.println("List<PlayerModel> list = dbManager.getAll() elements .getSavedName:" + savedModel.getSavedName());
+            if (saveName.equals(savedModel.getSavedName())) {
+                System.out.println("Enter if statement ");
                 isExist = true;
+                System.out.println("isExist: " + isExist);
             }
         }
-
 
         return isExist;
     }
@@ -203,7 +210,7 @@ public class SaveTheGame {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
             // ... user chose "Yes"
-            dbManager.update(player);
+            dbManager.update();
             alert.close();
             window.close();
 
@@ -218,13 +225,13 @@ public class SaveTheGame {
 
         dbManager = new GameDatabaseManager();
         try {
-            dbManager.setup();
+            dbManager.setup(map);
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }
     }
 
-    private ComboBox<String> savedGamesListBox() {
+   /* private ComboBox<String> savedGamesListBox() {
         ComboBox<String> saves = new ComboBox<>();
         saves.setEditable(false);
         saves.setBackground(null);
@@ -232,7 +239,7 @@ public class SaveTheGame {
                 "    -fx-border-radius: 5;" +
                 "    -fx-padding: 6 6 6 6; -fx-text-fill: #ffdb00");
         return saves;
-    }
+    }*/
 
 
 }

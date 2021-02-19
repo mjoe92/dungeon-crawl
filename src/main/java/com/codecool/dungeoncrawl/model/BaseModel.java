@@ -4,9 +4,9 @@ import java.lang.reflect.Field;
 
 public class BaseModel {
     // null means not saved
-    protected Integer id;
+    transient protected Integer id;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

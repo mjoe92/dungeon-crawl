@@ -14,6 +14,24 @@ public class GameStateDaoJdbc implements GameStateDao {
 
     public GameStateDaoJdbc(DataSource dataSource) {
         this.dataSource = dataSource;
+        this.playerDao = new PlayerDaoJdbc(dataSource);
+    }
+
+    @Override
+    public void createGameStateTable() {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "CREATE TABLE IF NOT EXISTS game_state (\n" +
+                    "    id serial NOT NULL PRIMARY KEY,\n" +
+                    "    current_map text NOT NULL,\n" +
+                    "    saved_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,\n" +
+                    "    player_id integer NOT NULL\n" +
+                    ");";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -24,7 +42,7 @@ public class GameStateDaoJdbc implements GameStateDao {
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, state.getCurrentMap());
             statement.setDate(2, state.getSavedAt());
-            statement.setString(3, state.getPlayer().getPlayerName());
+            statement.setInt(3, state.getPlayer().getId());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -54,14 +72,15 @@ public class GameStateDaoJdbc implements GameStateDao {
     }
 
     @Override
-    public GameState get(int id) {
+    public GameState get(long id) {
         try (Connection conn = dataSource.getConnection()) {
             String sql = "SELECT current_map, " +
                     "saved_at, " +
                     "player_id " +
+                    "FROM game_state " +
                     "WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
-            st.setInt(1, id);
+            st.setInt(1, (int) id);
             ResultSet rs = st.executeQuery();
             if (!rs.next()) {
                 return null;
@@ -71,7 +90,7 @@ public class GameStateDaoJdbc implements GameStateDao {
             int playerId = rs.getInt(3);
 
             GameState state = new GameState(mapName, savedDate, playerDao.get(playerId));
-            state.setId(id);
+            state.setId((int) id);
             return state;
         } catch (SQLException e) {
             throw new RuntimeException(e);

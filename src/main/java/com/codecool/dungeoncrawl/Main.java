@@ -1,12 +1,15 @@
 package com.codecool.dungeoncrawl;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.display.SaveTheGame;
+import com.codecool.dungeoncrawl.display.*;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.MapLoader;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Items;
+import com.codecool.dungeoncrawl.model.GameState;
+import com.codecool.dungeoncrawl.model.PlayerModel;
+import com.codecool.dungeoncrawl.serialize.DeserializeJSON;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -20,14 +23,18 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.*;
 
 import com.codecool.dungeoncrawl.AI.AttackMovement;
 import com.codecool.dungeoncrawl.AI.RandomMovement;
-import com.codecool.dungeoncrawl.display.Settings;
 import com.codecool.dungeoncrawl.logic.*;
 
 import com.codecool.dungeoncrawl.logic.actors.Actor;
@@ -52,7 +59,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -81,7 +87,8 @@ public class Main extends Application {
     Label monsterstrengthLabel = new Label();
     GameDatabaseManager dbManager;
     MenuBar menuBar = new MenuBar();
-    SaveTheGame saveTheGame = new SaveTheGame(map.getPlayer());
+    SaveTheGame saveTheGame = new SaveTheGame(map);
+    String path;
 
     static Stage window;
 
@@ -91,7 +98,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        setupDbManager();
+
+        map.getPlayer().setCurrentMap("map.txt");
+    //    setupDbManager();
+
 
         window = primaryStage;
         window.initStyle(StageStyle.UTILITY);
@@ -111,7 +121,17 @@ public class Main extends Application {
         menuBar.getMenus().add(menu);
 
         //Menuelem event TODO load, export, import event
+        Load load = new Load(map);
+        Import importGame = new Import(map);
+        Export exportGame;
+
+
         saveMenuItem.setOnAction(e -> saveTheGame.displaySaveWindow());
+        loadMenuItem.setOnAction(e -> load.displayLoadWindow());
+
+        exportGame = new Export(map);
+        exportMenuItem.setOnAction(e -> exportGame.createSaveDialog());
+        importMenuItem.setOnAction(e -> createLoadDialog());
       /*  menuBar.setStyle("-fx-background-color: #472D3C;");
         menu.setStyle("-fx-font-size: 1em; -fx-background-color:#472D3C; -fx-text-fill: #CFC6B8; -fx-border-radius: 5; -fx-padding: 6 12 12 12; -fx-border-color: #F4B41B; -fx-my-menu-color: #F4B41B;" +
                 "-fx-my-menu-color-highlighted: #CFC6B8;");*/
@@ -254,14 +274,14 @@ public class Main extends Application {
         if (map.getPlayer().isCanMove()) {
             for (Actor monster : map.getMonsters()) {
 
-                if (monster.getHealth() == 0) {
+              /*  if (monster.getHealth() == 0) {
                     // System.out.println("Monster to remove:" + monster);
                     //System.out.println("Monsters before remove:" + map.getMonsters().toString());
 
                     map.removeMonster(monster);
 
                     //   System.out.println("Monsters after removed:" + map.getMonsters().toString());
-                }
+                }*/
 
                 if (monster.getHealth() > 0) {
                     RandomMovement monsterMove = new RandomMovement();
@@ -288,6 +308,7 @@ public class Main extends Application {
             playerInventory = map.getPlayer().getInventory();   //a kirajzoláshoz új maphez be kell állítani az új inventoryt
             map.getPlayer().setStrength(playerStrengthcopy);
             map.getPlayer().setHealth(playerHealthCopy);
+            map.getPlayer().setCurrentMap("map2.txt");
 
         }
 
@@ -326,7 +347,7 @@ public class Main extends Application {
     private void setupDbManager() {
         dbManager = new GameDatabaseManager();
         try {
-            dbManager.setup();
+            dbManager.setup(map);
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
         }
@@ -365,12 +386,12 @@ public class Main extends Application {
 
     private void drawAttackedMonstersProperties() {
 
-        System.out.println("drawAttackedMonstersProperties started");
+  //      System.out.println("drawAttackedMonstersProperties started");
         boolean isAttack = true;
         for (Actor monster : map.getMonsters()) {
-            System.out.println("foreach started actual monster: " + monster.getTileName() + " under attack: " + monster.isUnderAttack());
+       //     System.out.println("foreach started actual monster: " + monster.getTileName() + " under attack: " + monster.isUnderAttack());
             if (monster.isUnderAttack()) {
-                System.out.println("attackedmonster found set label");
+           //     System.out.println("attackedmonster found set label");
                 monsterType.setText("" + monster.getTileName());
                 monsterHealthLabel.setText("" + monster.getHealth());
                 monsterstrengthLabel.setText("" + monster.getStrength());
@@ -378,7 +399,7 @@ public class Main extends Application {
             }
         }
         if (isAttack) {
-            System.out.println("no attacked monster found");
+    //        System.out.println("no attacked monster found");
             monsterType.setText("");
             monsterHealthLabel.setText("");
             monsterstrengthLabel.setText("");
@@ -397,4 +418,84 @@ public class Main extends Application {
     public static void exitGame() {
         window.close();
     }
+
+    private static void saveTextToFile(String content, File file) {
+        try {
+            PrintWriter writer;
+            writer = new PrintWriter(file);
+            writer.println(content);
+            writer.close();
+        } catch (IOException ex) {
+            System.out.println("Írási hiba!");
+        }
+    }
+
+    public static String createSaveDialog() {
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
+        fc.setInitialFileName("export.txt");
+        File f = fc.showSaveDialog(window);
+        if (f != null) {
+            //saveTextToFile("Ez itt a JSON adatok helye\nEz itt a JSON adatok helye", f);
+            System.out.println("Path to save: " + f.getAbsolutePath());
+            return f.getAbsolutePath();
+        }
+        return null;
+    }
+
+    public void createLoadDialog() {
+        FileChooser fc = new FileChooser();
+        fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
+        fc.setInitialFileName("export.txt");
+        File f = fc.showOpenDialog(window);
+
+        if (f != null) {
+            System.out.println("Path to load: " + f.getAbsolutePath());
+
+            path = f.getAbsolutePath();
+        }
+
+        loadGame();
+    }
+
+    private void loadGame() {
+
+        GameState gameStateToLoad = DeserializeJSON.importGameState(path);
+        PlayerModel playerModelToLoad = gameStateToLoad.getPlayer();
+
+        String currentmap = gameStateToLoad.getCurrentMap();
+        map = MapLoader.loadMap(currentmap);
+
+        Player player = map.getPlayer();
+
+        map.setMonsters(new ArrayList<>(gameStateToLoad.getMonsters()));
+
+        for (Actor mon:map.getMonsters()) {
+
+            mon.setCell(map.getCell(mon.getX(),mon.getY()));
+            map.getCell(mon.getX(),mon.getY()).setActor(mon);
+
+        }
+
+
+
+        player.setPlayerName(playerModelToLoad.getPlayerName());
+        player.setCurrentMap(currentmap);
+        player.setInventory(new ArrayList<>(playerModelToLoad.getInventory()));
+
+        Cell cell = map.getCell(player.getX(), player.getY());
+        Cell nextCell = map.getCell(playerModelToLoad.getX(), playerModelToLoad.getY());
+        cell.setActor(null);
+        nextCell.setActor(player);
+        player.setCell(nextCell);
+
+        player.setHealth(playerModelToLoad.getHealth());
+        player.setStrength(playerModelToLoad.getStrength());
+        player.setSpeed(playerModelToLoad.getSpeed());
+        player.setCanPassWall(playerModelToLoad.isCanPassWall());
+
+        refresh();
+
+    }
+
 }

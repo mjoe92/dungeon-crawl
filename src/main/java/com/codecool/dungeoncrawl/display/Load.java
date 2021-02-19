@@ -38,7 +38,7 @@ import com.codecool.dungeoncrawl.display.Settings;
 
 public class Load {
     private static Stage window;
-    private static List<String> savedGameList;
+    private List<String> savedGameList = new ArrayList<>();
 
     GameDatabaseManager dbManager;
     Player player;
@@ -49,15 +49,12 @@ public class Load {
         this.map = map;
     }
 
-    public void setSavedGameList(List<String> savedGameList) {
+    public void generateSavedGameList() {
         setupDbManager();
         List<PlayerModel> list = dbManager.getAll();
-        List<String> savedNames = new ArrayList<>();
         for (PlayerModel savedPM : list) {
             savedGameList.add(savedPM.getSavedName());
         }
-
-        this.savedGameList = savedNames;
     }
 
     public void displayLoadWindow() {
@@ -89,10 +86,9 @@ public class Load {
 
         //mjoe: combobox added
         ComboBox<String> saves = savedGamesListBox();
-        saves.getItems().add("sample save 1");
-        //saves.getItems().addAll(savedGameList);
-
-        saves.setPrefSize(100, 50);
+        generateSavedGameList();
+        saves.getItems().addAll(savedGameList);
+        saves.setPrefSize(500, 50);
 
         saves.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
                 "    -fx-border-radius: 5;" +
@@ -101,7 +97,7 @@ public class Load {
         saves.setBackground(null);
 
         Button loadButton = new Button("LOAD");
-        loadButton.setOnAction(e -> onKeyPressed());
+        loadButton.setOnAction(e -> onKeyPressed(saves));
         loadButton.setAlignment(Pos.BOTTOM_CENTER);
         loadButton.setBackground(background);
         loadButton.setStyle("-fx-font-size: 2em;-fx-border-color: #ffdb00;" +
@@ -142,18 +138,21 @@ public class Load {
         ft2.play();
 
         Scene scene = new Scene(layout);
-        scene.setOnKeyPressed(key -> onKeyPressed());
+        scene.setOnKeyPressed(key -> onKeyPressed(saves));
 
         window.setScene(scene);
         window.showAndWait();
     }
 
-    private void onKeyPressed() {
+    private void onKeyPressed(ComboBox<String> box) {
         /**There is a Load menu which brings up a modal window, showing the previously saved states with their names as a
          * selectable list. Choosing an element loads the selected game state with the proper map, position and inventory*/
-        setupDbManager();
 
-        //TODO implement keyevents for Load button: get the datas and load the game: load map, change player fields
+        setupDbManager();
+        long id = savedGameList.indexOf(box.getSelectionModel().getSelectedItem()) + 1;
+        PlayerModel player = dbManager.getPM((int) id);
+        GameState state = dbManager.getGS((int) id);
+        //reloadState();
     }
 
 
