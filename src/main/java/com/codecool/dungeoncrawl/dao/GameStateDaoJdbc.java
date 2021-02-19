@@ -104,7 +104,7 @@ public class GameStateDaoJdbc implements GameStateDao {
                     "current_map, " +
                     "saved_at, " +
                     "player_id " +
-                    "FROM player";
+                    "FROM game_state";
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             List<GameState> result = new ArrayList<>();

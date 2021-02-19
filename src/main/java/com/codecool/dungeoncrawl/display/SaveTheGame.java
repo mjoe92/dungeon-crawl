@@ -1,26 +1,18 @@
 package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
+import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
-import com.codecool.dungeoncrawl.dao.PlayerDao;
 
 import javafx.animation.FadeTransition;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -30,9 +22,6 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
-
-import com.codecool.dungeoncrawl.display.Settings;
 
 public class SaveTheGame {
     private static Stage window;
@@ -167,11 +156,11 @@ public class SaveTheGame {
     }
 
     private boolean alreadyExistInDb() {
-        setupDbManager();
+        //setupDbManager();
         boolean isExist = false; //
         // check if already exist the given name in db - végigiterálunk listán és átállítom falseról truera ha van találat
 
-        List<PlayerModel> list = dbManager.getAll();
+        List<PlayerModel> list = dbManager.getAllPlayerModel();
         String saveName = name.getText();
 
         for (PlayerModel savedModel: list) {
@@ -179,7 +168,10 @@ public class SaveTheGame {
             System.out.println("List<PlayerModel> list = dbManager.getAll() elements .getSavedName:" + savedModel.getSavedName());
             if (saveName.equals(savedModel.getSavedName())) {
                 System.out.println("Enter if statement ");
+                dbManager.getModel().setId(savedModel.getId());
                 isExist = true;
+                //dbManager.setModel(savedModel);
+
                 System.out.println("isExist: " + isExist);
             }
         }
@@ -210,6 +202,7 @@ public class SaveTheGame {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
             // ... user chose "Yes"
+            findGameStateByPlayerId(dbManager.getModel().getId());
             dbManager.update();
             alert.close();
             window.close();
@@ -228,6 +221,15 @@ public class SaveTheGame {
             dbManager.setup(map);
         } catch (SQLException ex) {
             System.out.println("Cannot connect to database.");
+        }
+    }
+
+    private void findGameStateByPlayerId(int playerId){
+        List<GameState> savedGameStates = dbManager.getAllGameState();
+        for(GameState gameState : savedGameStates) {
+            if(gameState.getPlayer().getId().equals(playerId)){
+                dbManager.getGameState().setId(gameState.getId());
+            }
         }
     }
 

@@ -24,6 +24,7 @@ public class PlayerModel extends BaseModel implements Serializable {
 
     public PlayerModel(String playerName, int x, int y) {
         //this.playerName = player.getName();
+        this.playerName = playerName;
         this.x = x;
         this.y = y;
     }

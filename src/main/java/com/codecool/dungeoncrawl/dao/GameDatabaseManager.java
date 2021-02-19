@@ -26,23 +26,28 @@ public class GameDatabaseManager {
         playerDao = new PlayerDaoJdbc(dataSource);
         gameStateDao = new GameStateDaoJdbc(dataSource);
         this.model = new PlayerModel(map.getPlayer());
-
         this.gameState = new GameState(map, model);
     }
 
 
     public void savePlayer() {
         playerDao.add(model);
+
         gameStateDao.add(gameState);
     }
 
     public void update() {
         playerDao.update(model);
+
         gameStateDao.update(gameState);
     }
 
-    public List<PlayerModel> getAll() {
+    public List<PlayerModel> getAllPlayerModel() {
         return playerDao.getAll();
+    }
+
+    public List<GameState> getAllGameState() {
+        return gameStateDao.getAll();
     }
 
     public PlayerModel getPM(int id) {
@@ -75,6 +80,20 @@ public class GameDatabaseManager {
 
         return dataSource;
     }
+
+    public void setModel(PlayerModel model) {
+        this.model = model;
+    }
+
+    public PlayerModel getModel() {
+        return model;
+    }
+
+    public GameState getGameState() {
+        return gameState;
+    }
+
+
 }
 
 

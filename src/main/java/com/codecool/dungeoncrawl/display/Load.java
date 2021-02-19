@@ -1,27 +1,18 @@
 package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
-import com.codecool.dungeoncrawl.dao.PlayerDao;
 
 import javafx.animation.FadeTransition;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -30,11 +21,6 @@ import javafx.util.Duration;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
-
-import com.codecool.dungeoncrawl.display.Settings;
 
 public class Load {
     private static Stage window;
@@ -51,7 +37,7 @@ public class Load {
 
     public void generateSavedGameList() {
         setupDbManager();
-        List<PlayerModel> list = dbManager.getAll();
+        List<PlayerModel> list = dbManager.getAllPlayerModel();
         for (PlayerModel savedPM : list) {
             savedGameList.add(savedPM.getSavedName());
         }
