@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.display;
 
+import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
 import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
 import com.codecool.dungeoncrawl.logic.GameMap;
@@ -152,7 +153,7 @@ public class Load {
         long id = savedGameList.indexOf(box.getSelectionModel().getSelectedItem()) + 1;
         PlayerModel player = dbManager.getPM((int) id);
         GameState state = dbManager.getGS((int) id);
-        //reloadState();
+        Main.reloadState(state);
     }
 
 
