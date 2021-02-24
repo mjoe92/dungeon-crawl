@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.dao;
 
+import com.codecool.dungeoncrawl.logic.items.*;
 import com.codecool.dungeoncrawl.model.PlayerModel;
 
 import javax.sql.DataSource;
@@ -25,7 +26,24 @@ public class PlayerDaoJdbc implements PlayerDao {
                     "    y integer NOT NULL,\n" +
                     "    strength integer NOT NULL,\n" +
                     "    speed integer NOT NULL,\n" +
-                    "    game_name text NOT NULL\n" +
+                    "    game_name text NOT NULL,\n" +
+                    "    tile_name text NOT NULL\n" +
+                    ");";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void createInventoryTable() {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "CREATE TABLE IF NOT EXISTS inventory (\n" +
+                    "    id serial NOT NULL PRIMARY KEY,\n" +
+                    "    player_id integer NOT NULL,\n" +
+                    "    item_name text NOT NULL,\n" +
                     ");";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.executeUpdate();
@@ -38,8 +56,8 @@ public class PlayerDaoJdbc implements PlayerDao {
     @Override
     public void add(PlayerModel playerModel) {
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "INSERT INTO player (player_name, hp, x, y, strength, speed, game_name) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO player (player_name, hp, x, y, strength, speed, game_name, tile_name) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setString(1, playerModel.getPlayerName());
             statement.setInt(2, playerModel.getHealth());
@@ -48,6 +66,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             statement.setInt(5, playerModel.getStrength());
             statement.setInt(6, playerModel.getSpeed());
             statement.setString(7, playerModel.getSavedName());
+            statement.setString(8, playerModel.getTileName());
             statement.executeUpdate();
             ResultSet resultSet = statement.getGeneratedKeys();
             resultSet.next();
@@ -71,7 +90,8 @@ public class PlayerDaoJdbc implements PlayerDao {
                     "x = ?, " +
                     "y = ?, " +
                     "strength = ?, " +
-                    "speed = ? " +
+                    "speed = ?, " +
+                    "tile_name = ? " +
                     "WHERE id = ?";
             PreparedStatement statement = conn.prepareStatement(sql);
             statement.setString(1, playerModel.getPlayerName());
@@ -80,7 +100,8 @@ public class PlayerDaoJdbc implements PlayerDao {
             statement.setInt(4, playerModel.getY());
             statement.setInt(5, playerModel.getStrength());
             statement.setInt(6, playerModel.getSpeed());
-            statement.setInt(7, playerModel.getId());
+            statement.setString(7, playerModel.getTileName());
+            statement.setInt(8, playerModel.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -97,7 +118,8 @@ public class PlayerDaoJdbc implements PlayerDao {
                     "y, " +
                     "strength, " +
                     "speed, " +
-                    "game_name " +
+                    "game_name, " +
+                    "tile_name " +
                     "FROM player " +
                     "WHERE id = ?";
             PreparedStatement st = conn.prepareStatement(sql);
@@ -114,6 +136,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             int strength = rs.getInt(6);
             int speed = rs.getInt(7);
             String savedName = rs.getString(8);
+            String tileName = rs.getString(9);
 
             PlayerModel player = new PlayerModel(name, x, y);
             player.setId(playerId);
@@ -121,6 +144,7 @@ public class PlayerDaoJdbc implements PlayerDao {
             player.setStrength(strength);
             player.setSpeed(speed);
             player.setSavedName(savedName);
+            player.setTileName(tileName);
             return player;
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -137,7 +161,8 @@ public class PlayerDaoJdbc implements PlayerDao {
                     "y, " +
                     "strength, " +
                     "speed, " +
-                    "game_name " +
+                    "game_name, " +
+                    "tile_name " +
                     "FROM player";
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
@@ -151,6 +176,7 @@ public class PlayerDaoJdbc implements PlayerDao {
                 int strength = rs.getInt(6);
                 int speed = rs.getInt(7);
                 String savedName = rs.getString(8);
+                String tileName = rs.getString(9);
 
                 PlayerModel player = new PlayerModel(playerName, x, y);
                 player.setId(playerId);
@@ -158,7 +184,61 @@ public class PlayerDaoJdbc implements PlayerDao {
                 player.setStrength(strength);
                 player.setSpeed(speed);
                 player.setSavedName(savedName);
+                player.setTileName(tileName);
                 result.add(player);
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void addItem(PlayerModel playerModel) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "INSERT INTO inventory (player_id, item_name) " +
+                    "VALUES (?, ?)";
+            PreparedStatement statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, playerModel.getPlayerName());
+            statement.setInt(2, playerModel.getHealth());
+            statement.executeUpdate();
+
+            ResultSet resultSet = statement.getGeneratedKeys();
+            resultSet.next();
+            playerModel.setId(resultSet.getInt(1));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public List<Items> getAllItemsForPlayer(PlayerModel pm) {
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT id, " +
+                    "player_id, " +
+                    "item_name " +
+                    "FROM inventory " +
+                    "WHERE player_id = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, pm.getId());
+            statement.executeUpdate();
+
+            ResultSet rs = conn.createStatement().executeQuery(sql);
+            List<Items> result = new ArrayList<>();
+            while (rs.next()) {
+
+                int playerId = rs.getInt(2);
+                String itemName = rs.getString(3);
+
+                Items item = null;
+                switch (itemName) {
+                    case "key":
+                        item = new Key();
+                        break;
+                    case "sword":
+                        item = new Sword();
+                        break;
+                }
+                result.add(item);
             }
             return result;
         } catch (SQLException e) {

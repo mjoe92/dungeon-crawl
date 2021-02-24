@@ -9,6 +9,10 @@ public class Sword extends Items{
         super(cell);
     }
 
+    public Sword() {
+        super();
+    }
+
     @Override
     public String getTileName() {
         return "sword";

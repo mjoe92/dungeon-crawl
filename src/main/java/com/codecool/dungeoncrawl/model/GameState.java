@@ -1,7 +1,12 @@
 package com.codecool.dungeoncrawl.model;
 
+import com.codecool.dungeoncrawl.Tiles;
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.CellType;
+import com.codecool.dungeoncrawl.logic.Cheats;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Actor;
+import com.codecool.dungeoncrawl.logic.actors.Player;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -78,4 +83,5 @@ public class GameState extends BaseModel implements Serializable {
     public void setMonsters(List<Actor> monsters) {
         this.monsters = monsters;
     }
+
 }

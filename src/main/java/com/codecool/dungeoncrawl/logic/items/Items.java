@@ -13,5 +13,7 @@ public abstract class Items implements Drawable, Serializable {
         this.cell.setItem(this);
     }
 
+    public Items() {
+    }
 
 }

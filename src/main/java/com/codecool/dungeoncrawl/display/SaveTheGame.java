@@ -157,6 +157,7 @@ public class SaveTheGame {
     private void onKeyPressed() {
         player.setSavedName(name.getText());
         setupDbManager();
+        dbManager.getModel().setSavedName(name.getText());
 
          if (alreadyExistInDb()) {
             showDialogBox();
@@ -183,7 +184,7 @@ public class SaveTheGame {
                 System.out.println("isExist: " + isExist);
             }
         }
-
+        dbManager.getModel().setSavedName(name.getText());
         return isExist;
     }
 

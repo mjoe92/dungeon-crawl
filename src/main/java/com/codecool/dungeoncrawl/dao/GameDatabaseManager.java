@@ -36,6 +36,10 @@ public class GameDatabaseManager {
         gameStateDao.add(gameState);
     }
 
+    public PlayerModel getModel() {
+        return model;
+    }
+
     public void update() {
         playerDao.update(model);
         gameStateDao.update(gameState);
@@ -49,8 +53,8 @@ public class GameDatabaseManager {
         return playerDao.get(id);
     }
 
-    public GameState getGS(int id) {
-        return gameStateDao.get(id);
+    public GameState getGSByPlayerId(int playerId) {
+        return gameStateDao.getAll().stream().filter(gm -> gm.getPlayer().getId() == playerId).findFirst().get();
     }
 
     private DataSource connect() throws SQLException {

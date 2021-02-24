@@ -80,6 +80,7 @@ public class Main extends Application {
 
     //TilePane inventoryTilePane = new TilePane();
     BorderPane inventoryPane = new BorderPane();
+    Label playerLabel = new Label();
     Label healthLabel = new Label();
     Label strengthLabel = new Label();
     Label monsterType = new Label();
@@ -141,9 +142,8 @@ public class Main extends Application {
 
         //beállítások
         Settings settings = new Settings();
-        Cheats cheatActivator = new Cheats();
-
         settings.displayWithSettings();
+        Cheats cheatActivator = new Cheats();
         cheatActivator.activateCheat(settings.getPlayerName(), map.getPlayer());
 
         GridPane ui = new GridPane();               //gridbe rendezi, azonos sorban lévők azonos magasak, oszlopban azonos szélesek a leghosszabbhoz igazítva
@@ -151,7 +151,7 @@ public class Main extends Application {
         ui.setPadding(new Insets(10));
 
 
-        Label playerLabel = new Label(settings.getPlayerName());       //játékos nevét fogja kiírni, lehet majd csillivillizni
+        playerLabel = new Label(settings.getPlayerName());       //játékos nevét fogja kiírni, lehet majd csillivillizni
         ui.add(new Label("Player: "), 0, 1);
         ui.add(playerLabel, 1, 1);
 
@@ -303,20 +303,21 @@ public class Main extends Application {
             ArrayList<Items> copyInventory = map.getPlayer().getInventory(); //le kellett másolni hogy később hozzá tudjuk adni (E)
             int playerStrengthcopy = map.getPlayer().getStrength();     //player strength is marad
             int playerHealthCopy = map.getPlayer().getHealth();
+            String playerTileName = map.getPlayer().getTileName();
             map = MapLoader.loadMap("map2.txt"); //lépcső -> következő map
             map.getPlayer().setInventory(copyInventory);    //új map új játékosához be kell állítani a dolgokat, inventoryt itt állítottam (E)
             playerInventory = map.getPlayer().getInventory();   //a kirajzoláshoz új maphez be kell állítani az új inventoryt
             map.getPlayer().setStrength(playerStrengthcopy);
             map.getPlayer().setHealth(playerHealthCopy);
             map.getPlayer().setCurrentMap("map2.txt");
-
+            map.getPlayer().setTileName(playerTileName);
         }
 
         refresh(); //lépés + szint váltása után. Mivel nálam a pickup még nincs bent, ez lehet, hogy bekavar.
         drawInventory();
     }
 
-    private void refresh() {
+    public void refresh() {
 
         context.setFill(Color.BLACK);
         context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
@@ -498,7 +499,16 @@ public class Main extends Application {
 
     }
 
-    public static void reloadState(GameState state) {
+    public static void loadFromDB(GameState state, PlayerModel playerModel) {
         map = MapLoader.loadMap(state.getCurrentMap());
+
+        map.getPlayer().setHealth(playerModel.getHealth());
+        map.getPlayer().setSpeed(playerModel.getSpeed());
+        map.getPlayer().setStrength(playerModel.getStrength());
+        map.getPlayer().setTileName(playerModel.getTileName());
+
+        //playerLabel = new Label(playerModel.getPlayerName());
+        //map.getPlayer().setPlayerName(playerModel.getPlayerName());
+        //map.getPlayer().setInventory();
     }
 }

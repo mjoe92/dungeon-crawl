@@ -30,6 +30,10 @@ public class Player extends Actor {
         return playerName;
     }
 
+    public void setTileName(String playerName) {
+        this.playerName = playerName;
+    }
+
     @Override
     public boolean isCanPassWall() {
         return canPassWall;

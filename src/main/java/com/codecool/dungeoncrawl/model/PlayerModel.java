@@ -1,6 +1,8 @@
 package com.codecool.dungeoncrawl.model;
 
 import com.codecool.dungeoncrawl.dao.GameStateDao;
+import com.codecool.dungeoncrawl.logic.Cell;
+import com.codecool.dungeoncrawl.logic.Cheats;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.logic.items.Items;
 
@@ -19,6 +21,7 @@ public class PlayerModel extends BaseModel implements Serializable {
     private String savedName;
     private ArrayList<Items> inventory;
     private boolean canPassWall;
+    private String tileName;
 
     transient private GameStateDao gameStateDao;        //transient mert nem kell gsonhoz
 
@@ -42,7 +45,7 @@ public class PlayerModel extends BaseModel implements Serializable {
         this.speed = player.getSpeed();
         this.strength = player.getStrength();
         this.savedName = player.getSavedName();
-
+        this.tileName = player.getTileName();
     }
 
     public String getPlayerName() {
@@ -117,7 +120,13 @@ public class PlayerModel extends BaseModel implements Serializable {
         this.canPassWall = canPassWall;
     }
 
+    public String getTileName() {
+        return tileName;
+    }
 
+    public void setTileName(String tileName) {
+        this.tileName = tileName;
+    }
 
     /*
     public Player getPlayer() {

@@ -2,27 +2,18 @@ package com.codecool.dungeoncrawl.display;
 
 import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.dao.GameDatabaseManager;
-import com.codecool.dungeoncrawl.dao.PlayerDaoJdbc;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.logic.actors.Player;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.model.PlayerModel;
-import com.codecool.dungeoncrawl.dao.PlayerDao;
 
 import javafx.animation.FadeTransition;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.effect.Blend;
-import javafx.scene.effect.BlendMode;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -31,15 +22,10 @@ import javafx.util.Duration;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.UnaryOperator;
-import java.util.stream.Collectors;
-
-import com.codecool.dungeoncrawl.display.Settings;
 
 public class Load {
     private static Stage window;
-    private List<String> savedGameList = new ArrayList<>();
+    private static List<String> savedGameList = new ArrayList<>();
 
     GameDatabaseManager dbManager;
     Player player;
@@ -48,6 +34,7 @@ public class Load {
     public Load(GameMap map) {
         this.player = map.getPlayer();
         this.map = map;
+
     }
 
     public void generateSavedGameList() {
@@ -87,7 +74,7 @@ public class Load {
 
         //mjoe: combobox added
         ComboBox<String> saves = savedGamesListBox();
-        generateSavedGameList();
+        if (savedGameList.size() == 0) generateSavedGameList();
         saves.getItems().addAll(savedGameList);
         saves.setPrefSize(500, 50);
 
@@ -150,10 +137,11 @@ public class Load {
          * selectable list. Choosing an element loads the selected game state with the proper map, position and inventory*/
 
         setupDbManager();
-        long id = savedGameList.indexOf(box.getSelectionModel().getSelectedItem()) + 1;
-        PlayerModel player = dbManager.getPM((int) id);
-        GameState state = dbManager.getGS((int) id);
-        Main.reloadState(state);
+        int row = savedGameList.indexOf(box.getSelectionModel().getSelectedItem());
+        int id = dbManager.getAll().get(row).getId();
+        PlayerModel player = dbManager.getPM(id);
+        GameState state = dbManager.getGSByPlayerId(id);
+        Main.loadFromDB(state, player);
         window.close();
     }
 
