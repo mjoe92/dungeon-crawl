@@ -41,7 +41,10 @@ public class GameDatabaseManager {
     }
 
     public void update() {
+        int id = playerDao.getIdBySavedName(model.getSavedName());
+        model.setId(id);
         playerDao.update(model);
+        gameState.setCurrentMap(map.getPlayer().getCurrentMap());
         gameStateDao.update(gameState);
     }
 

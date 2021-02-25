@@ -10,6 +10,9 @@ public interface PlayerDao {
     void createInventoryTable();
     void add(PlayerModel player);
     void update(PlayerModel player);
+
+    int getIdBySavedName(String savedName);
+
     PlayerModel get(int id);
     List<PlayerModel> getAll();
     List<Items> getAllItemsForPlayer(PlayerModel pm);

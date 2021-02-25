@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.logic.actors;
 
+import com.codecool.dungeoncrawl.display.Settings;
 import com.codecool.dungeoncrawl.logic.Cell;
 import com.codecool.dungeoncrawl.logic.items.Items;
 
@@ -16,11 +17,20 @@ public class Player extends Actor {
     private String savedName;
     private String currentMap;
 
+    private String labelName;
 
     public Player(Cell cell) {
         super(cell);
         this.health = 10;
         this.speed = 1;
+    }
+
+    public String getLabelName() {
+        return labelName;
+    }
+
+    public void setLabelName(String labelName) {
+        this.labelName = labelName;
     }
 
     public Player() {

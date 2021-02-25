@@ -83,8 +83,9 @@ public class PlayerDaoJdbc implements PlayerDao {
 
     @Override
     public void update(PlayerModel playerModel) {
+        //int id = getIdBySavedName(playerModel.getSavedName());
         try (Connection conn = dataSource.getConnection()) {
-            String sql = "UPDATE playerModel " +
+            String sql = "UPDATE player " +
                     "SET player_name = ?, " +
                     "hp = ?, " +
                     "x = ?, " +
@@ -102,7 +103,27 @@ public class PlayerDaoJdbc implements PlayerDao {
             statement.setInt(6, playerModel.getSpeed());
             statement.setString(7, playerModel.getTileName());
             statement.setInt(8, playerModel.getId());
+
             statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public int getIdBySavedName(String savedName) {
+
+        try (Connection conn = dataSource.getConnection()) {
+            String sql = "SELECT id, " +
+                    "player_name " +
+                    "FROM player " +
+                    "WHERE game_name = ?";
+            PreparedStatement st = conn.prepareStatement(sql);
+            st.setString(1, savedName);
+            ResultSet rs = st.executeQuery();
+            rs.next();
+            int id = rs.getInt(1);
+            return id;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

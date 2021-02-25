@@ -88,6 +88,10 @@ public class Settings {
         return playerName;
     }
 
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
     public void onKeyPressed() {
         if (name.getText().equals("Enter your name...") || name.getText().equals("")) {
             playerName = "Player 1";

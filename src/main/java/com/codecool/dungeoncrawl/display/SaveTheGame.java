@@ -158,7 +158,6 @@ public class SaveTheGame {
         player.setSavedName(name.getText());
         setupDbManager();
         dbManager.getModel().setSavedName(name.getText());
-
          if (alreadyExistInDb()) {
             showDialogBox();
         } else {
@@ -211,6 +210,8 @@ public class SaveTheGame {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == buttonTypeYes){
             // ... user chose "Yes"
+            //dbManager.getModel().setId(dbManager.getAll().get(savedGameList.size() - 1).getId() + 1);
+
             dbManager.update();
             alert.close();
             window.close();

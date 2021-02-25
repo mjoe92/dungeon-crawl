@@ -91,6 +91,7 @@ public class Main extends Application {
     SaveTheGame saveTheGame = new SaveTheGame(map);
     String path;
 
+    Settings settings = new Settings();
     static Stage window;
 
     public static void main(String[] args) {
@@ -102,7 +103,6 @@ public class Main extends Application {
 
         map.getPlayer().setCurrentMap("map.txt");
     //    setupDbManager();
-
 
         window = primaryStage;
         window.initStyle(StageStyle.UTILITY);
@@ -141,8 +141,8 @@ public class Main extends Application {
        //színkódok: lilás háttér: #472D3C; szürke betű: #CFC6B8 ; sárga keret, gomb betű: #F4B41B
 
         //beállítások
-        Settings settings = new Settings();
         settings.displayWithSettings();
+        map.getPlayer().setLabelName(settings.getPlayerName());
         Cheats cheatActivator = new Cheats();
         cheatActivator.activateCheat(settings.getPlayerName(), map.getPlayer());
 
@@ -304,6 +304,7 @@ public class Main extends Application {
             int playerStrengthcopy = map.getPlayer().getStrength();     //player strength is marad
             int playerHealthCopy = map.getPlayer().getHealth();
             String playerTileName = map.getPlayer().getTileName();
+            String labelName = map.getPlayer().getLabelName();
             map = MapLoader.loadMap("map2.txt"); //lépcső -> következő map
             map.getPlayer().setInventory(copyInventory);    //új map új játékosához be kell állítani a dolgokat, inventoryt itt állítottam (E)
             playerInventory = map.getPlayer().getInventory();   //a kirajzoláshoz új maphez be kell állítani az új inventoryt
@@ -311,6 +312,7 @@ public class Main extends Application {
             map.getPlayer().setHealth(playerHealthCopy);
             map.getPlayer().setCurrentMap("map2.txt");
             map.getPlayer().setTileName(playerTileName);
+            map.getPlayer().setLabelName(labelName);
         }
 
         refresh(); //lépés + szint váltása után. Mivel nálam a pickup még nincs bent, ez lehet, hogy bekavar.
@@ -501,14 +503,12 @@ public class Main extends Application {
 
     public static void loadFromDB(GameState state, PlayerModel playerModel) {
         map = MapLoader.loadMap(state.getCurrentMap());
-
         map.getPlayer().setHealth(playerModel.getHealth());
         map.getPlayer().setSpeed(playerModel.getSpeed());
         map.getPlayer().setStrength(playerModel.getStrength());
         map.getPlayer().setTileName(playerModel.getTileName());
-
-        //playerLabel = new Label(playerModel.getPlayerName());
-        //map.getPlayer().setPlayerName(playerModel.getPlayerName());
-        //map.getPlayer().setInventory();
+        map.getPlayer().getCell().setX(playerModel.getX());
+        map.getPlayer().getCell().setY(playerModel.getY());
+        map.getPlayer().setLabelName(playerModel.getPlayerName());
     }
 }

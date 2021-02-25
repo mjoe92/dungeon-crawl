@@ -26,7 +26,7 @@ public class PlayerModel extends BaseModel implements Serializable {
     transient private GameStateDao gameStateDao;        //transient mert nem kell gsonhoz
 
     public PlayerModel(String playerName, int x, int y) {
-        //this.playerName = player.getName();
+        this.playerName = playerName;
         this.x = x;
         this.y = y;
     }
@@ -36,7 +36,7 @@ public class PlayerModel extends BaseModel implements Serializable {
 
     public PlayerModel(Player player) {
         //this.player = player;
-        this.playerName = player.getName();
+        this.playerName = player.getLabelName();
         this.x = player.getCell().getX();
         this.y = player.getCell().getY();
         this.inventory = new ArrayList<>(player.getInventory());
