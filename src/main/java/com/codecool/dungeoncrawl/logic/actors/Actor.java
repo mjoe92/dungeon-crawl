@@ -96,6 +96,10 @@ public abstract class Actor implements Drawable {           //résztvevők/bábu
                     || isDoorOpen(nextCell))) {
                 cell.setActor(null);
                 nextCell.setActor(this);
+
+                this.setX(nextCell.getX());
+                this.setY(nextCell.getY());
+
                 prevCell = cell;
                 cell = nextCell;
 
