@@ -4,6 +4,8 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class Crown extends Items{
 
+    public Crown() {
+    }
 
     public Crown(Cell cell) {
         super(cell);

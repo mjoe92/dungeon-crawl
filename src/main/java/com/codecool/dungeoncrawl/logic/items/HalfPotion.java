@@ -4,6 +4,9 @@ import com.codecool.dungeoncrawl.logic.Cell;
 
 public class HalfPotion extends Items{
 
+    public HalfPotion() {
+    }
+
     public HalfPotion(Cell cell) {
         super(cell);
     }

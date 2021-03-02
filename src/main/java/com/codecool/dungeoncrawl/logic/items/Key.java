@@ -7,6 +7,9 @@ public class Key extends Items{
 
     private String TileName = "key";
 
+    public Key() {
+    }
+
     public Key(Cell cell) {
         super(cell);
     }
