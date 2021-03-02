@@ -123,14 +123,14 @@ public class Main extends Application {
         //Menuelem event TODO load, export, import event
         Load load = new Load(map);
         Import importGame = new Import(map);
-        Export exportGame;
+        //Export exportGame;
 
 
         saveMenuItem.setOnAction(e -> saveTheGame.displaySaveWindow());
         loadMenuItem.setOnAction(e -> load.displayLoadWindow());
 
-        exportGame = new Export(map);
-        exportMenuItem.setOnAction(e -> exportGame.createSaveDialog());
+        //exportGame = new Export(map);
+        exportMenuItem.setOnAction(e -> createSaveDialog());
         importMenuItem.setOnAction(e -> createLoadDialog());
       /*  menuBar.setStyle("-fx-background-color: #472D3C;");
         menu.setStyle("-fx-font-size: 1em; -fx-background-color:#472D3C; -fx-text-fill: #CFC6B8; -fx-border-radius: 5; -fx-padding: 6 12 12 12; -fx-border-color: #F4B41B; -fx-my-menu-color: #F4B41B;" +
@@ -144,6 +144,11 @@ public class Main extends Application {
         Cheats cheatActivator = new Cheats();
 
         settings.displayWithSettings();
+
+
+        System.out.println("Player name: " + map.getPlayer().getName() + " Settings Player name: " + settings.getPlayerName());
+        //map.getPlayer().setPlayerName(settings.getPlayerName());
+
         cheatActivator.activateCheat(settings.getPlayerName(), map.getPlayer());
 
         GridPane ui = new GridPane();               //gridbe rendezi, azonos sorban lévők azonos magasak, oszlopban azonos szélesek a leghosszabbhoz igazítva
@@ -232,18 +237,22 @@ public class Main extends Application {
         switch (keyEvent.getCode()) {
             case UP:
                 map.getPlayer().move(0, -1);
+                //System.out.println("x: " + map.getPlayer().getX() + " / y: " + map.getPlayer().getY());
                 refresh();
                 break;
             case DOWN:
                 map.getPlayer().move(0, 1);
+                //System.out.println("x: " + map.getPlayer().getX() + " / y: " + map.getPlayer().getY());
                 refresh();
                 break;
             case LEFT:
                 map.getPlayer().move(-1, 0);
+                //System.out.println("x: " + map.getPlayer().getX() + " / y: " + map.getPlayer().getY());
                 refresh();
                 break;
             case RIGHT:
                 map.getPlayer().move(1, 0);
+                //System.out.println("x: " + map.getPlayer().getX() + " / y: " + map.getPlayer().getY());
                 refresh();
                 break;
             case SPACE:
@@ -256,6 +265,7 @@ public class Main extends Application {
                 //dbManager.savePlayer(player);
                 break;
         }
+        //System.out.println("x: " + map.getPlayer().getX() + " / y: " + map.getPlayer().getY());
         if ((keyEvent.getCode() == KeyCode.UP
                 || keyEvent.getCode() == KeyCode.DOWN
                 || keyEvent.getCode() == KeyCode.LEFT
@@ -342,6 +352,7 @@ public class Main extends Application {
         drawAttackedMonstersProperties();
         healthLabel.setText("" + map.getPlayer().getHealth());
         strengthLabel.setText("" + map.getPlayer().getStrength());
+        System.out.println("x: " + map.getPlayer().getX() + " | y: " + map.getPlayer().getY() + " from refresh");
     }
 
     private void setupDbManager() {
@@ -430,17 +441,19 @@ public class Main extends Application {
         }
     }
 
-    public static String createSaveDialog() {
+    public static void createSaveDialog() {
+        Export ex = new Export(map);
+        String path = "";
         FileChooser fc = new FileChooser();
         fc.setInitialDirectory(new File(Paths.get(".").toAbsolutePath().normalize().toString()));
-        fc.setInitialFileName("export.txt");
+        fc.setInitialFileName("export");
         File f = fc.showSaveDialog(window);
         if (f != null) {
             //saveTextToFile("Ez itt a JSON adatok helye\nEz itt a JSON adatok helye", f);
             System.out.println("Path to save: " + f.getAbsolutePath());
-            return f.getAbsolutePath();
+            path = f.getAbsolutePath();
         }
-        return null;
+        ex.saveTheGame(path);
     }
 
     public void createLoadDialog() {

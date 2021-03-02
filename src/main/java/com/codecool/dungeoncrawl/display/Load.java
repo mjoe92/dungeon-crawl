@@ -154,6 +154,7 @@ public class Load {
         PlayerModel player = dbManager.getPM((int) id);
         GameState state = dbManager.getGS((int) id);
         Main.reloadState(state);
+        System.out.println("Oooops!!!");
         window.close();
     }
 

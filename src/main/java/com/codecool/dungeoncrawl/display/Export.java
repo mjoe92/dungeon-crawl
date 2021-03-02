@@ -1,5 +1,6 @@
 package com.codecool.dungeoncrawl.display;
 
+import com.codecool.dungeoncrawl.Main;
 import com.codecool.dungeoncrawl.logic.GameMap;
 import com.codecool.dungeoncrawl.model.GameState;
 import com.codecool.dungeoncrawl.serialize.SerializeJSON;
@@ -29,10 +30,10 @@ public class Export {
             System.out.println("Path to save: " + f.getAbsolutePath());
             path = f.getAbsolutePath();
         }
-        saveTheGame();
+        saveTheGame(null);
     }
 
-    public void saveTheGame() {
+    public void saveTheGame(String path) {
         SerializeJSON.saveSerializedGamestate(gameState, path);
     }
 
