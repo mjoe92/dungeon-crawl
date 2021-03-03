@@ -481,6 +481,12 @@ public class Main extends Application {
 
         Player player = map.getPlayer();
 
+        //monster clear from map
+        for (Actor mon:map.getMonsters()) {
+            mon.getCell().setActor(null);
+            mon.setCell(null);
+        }
+
         map.setMonsters(new ArrayList<>(gameStateToLoad.getMonsters()));
 
         for (Actor mon:map.getMonsters()) {
