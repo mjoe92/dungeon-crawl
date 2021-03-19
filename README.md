@@ -1,4 +1,4 @@
-# Dungeon Crawl (sprint 2)
+# Dungeon Crawl
 
 ## Story
 
